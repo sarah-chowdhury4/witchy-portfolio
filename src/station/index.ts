@@ -4,6 +4,7 @@ import { cauldronSvg } from './cauldron';
 import { enter, exit } from './transition';
 import { brew, hint, pick } from './brew';
 import { ASSET, potionStyle } from './art';
+import { BOOKS, CANDLE, PLANT } from './decor';
 
 type Flask = (typeof content.flasks)[number];
 
@@ -46,6 +47,12 @@ function flaskButton(f: Flask) {
   );
 }
 
+function decor(svg: string, cls: string) {
+  const d = h('li', { class: `decor ${cls}`, 'aria-hidden': 'true' });
+  d.innerHTML = svg;
+  return d;
+}
+
 function build(): HTMLElement {
   const skills = content.flasks.filter((f) => f.kind === 'skill');
   const topics = content.flasks.filter((f) => f.kind === 'topic');
@@ -54,37 +61,44 @@ function build(): HTMLElement {
   exitBtn.addEventListener('click', () => void closeStation());
 
   const pot = h('div', { class: 'st-cauldron' });
-  pot.innerHTML = cauldronSvg(160);
+  pot.innerHTML = cauldronSvg(128);
   const cat = h('div', { class: 'st-cat', 'aria-hidden': 'true', style: `background-image:url(${ASSET('cat-black-sleep.png')})` });
 
   const root = h('div', { class: 'station', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'station-title', hidden: '' },
     h('header', { class: 'st-bar' },
       exitBtn,
       h('h2', { id: 'station-title' }, 'Spell Station'),
-      h('p', { class: 'st-sub' }, 'Pick two flasks, brew, and see what they made.'),
+      h('p', { class: 'st-sub' }, 'Pick two bottles from the shelves, brew, and see what they made.'),
     ),
-    h('div', { class: 'st-body' },
-      h('section', { class: 'st-panel st-shelf', 'aria-labelledby': 'shelf-skills' },
-        h('h3', { id: 'shelf-skills' }, 'Skills'),
-        h('ul', { class: 'flasks' }, ...skills.map(flaskButton)),
-        h('h3', { id: 'shelf-topics' }, 'Topics'),
-        h('ul', { class: 'flasks' }, ...topics.map(flaskButton)),
+    h('div', { class: 'st-scene' },
+      h('section', { class: 'st-shelf st-shelf-skills', 'aria-labelledby': 'shelf-skills' },
+        h('h3', { id: 'shelf-skills', class: 'shelf-sign' }, 'Skills'),
+        h('ul', { class: 'flasks' }, ...skills.map(flaskButton), decor(PLANT, 'decor-plant')),
       ),
-      h('section', { class: 'st-panel st-brew', 'aria-label': 'Cauldron' },
-        h('div', { class: 'st-slots', 'aria-hidden': 'true' },
-          h('span', { class: 'potion-sprite slot' }), h('span', { class: 'potion-sprite slot' })),
-        pot,
-        cat,
-        h('p', { class: 'st-picks', 'aria-live': 'polite' }, 'Your cauldron is empty. Pick two flasks.'),
+      h('div', { class: 'st-window', 'aria-hidden': 'true' },
+        h('div', { class: 'st-window-glass' }, h('span', { class: 'st-moon' })),
+        h('div', { class: 'st-sill' }, cat),
+      ),
+      h('section', { class: 'st-shelf st-shelf-topics', 'aria-labelledby': 'shelf-topics' },
+        h('h3', { id: 'shelf-topics', class: 'shelf-sign' }, 'Topics'),
+        h('ul', { class: 'flasks' }, ...topics.map(flaskButton), decor(BOOKS, 'decor-books'), decor(CANDLE, 'decor-candle')),
+      ),
+    ),
+    h('section', { class: 'st-counter st-brew', 'aria-label': 'Cauldron' },
+      h('div', { class: 'st-slots', 'aria-hidden': 'true' },
+        h('span', { class: 'potion-sprite slot' }), h('span', { class: 'potion-sprite slot' })),
+      pot,
+      h('div', { class: 'st-counter-text' },
+        h('p', { class: 'st-picks', 'aria-live': 'polite' }, 'Your cauldron is empty. Pick two bottles.'),
         h('div', { class: 'st-actions' },
           h('button', { type: 'button', class: 'st-btn st-btn-primary st-brew-btn', disabled: '' }, 'Brew'),
           h('button', { type: 'button', class: 'st-btn st-clear-btn', disabled: '' }, 'Clear'),
         ),
       ),
-      h('section', { class: 'st-panel st-results', 'aria-labelledby': 'results-h' },
-        h('h3', { id: 'results-h' }, 'Your brew'),
-        h('div', { class: 'st-result', 'aria-live': 'polite', tabindex: '-1' }, h('p', { class: 'st-empty' }, 'Nothing brewed yet.')),
-      ),
+    ),
+    h('section', { class: 'st-results', 'aria-labelledby': 'results-h' },
+      h('h3', { id: 'results-h' }, 'Your brew'),
+      h('div', { class: 'st-result', 'aria-live': 'polite', tabindex: '-1' }, h('p', { class: 'st-empty' }, 'Nothing brewed yet.')),
     ),
   );
 
@@ -126,7 +140,7 @@ function wireBrewing(root: HTMLElement) {
       b.setAttribute('aria-pressed', String(picks.includes(b.dataset.flask!))));
     const names = picks.map((id) => LABEL.get(id));
     root.querySelector('.st-picks')!.textContent =
-      picks.length === 0 ? 'Your cauldron is empty. Pick two flasks.'
+      picks.length === 0 ? 'Your cauldron is empty. Pick two bottles.'
       : picks.length === 1 ? `In the cauldron: ${names[0]}. Pick one more.`
       : `In the cauldron: ${names[0]} + ${names[1]}. Ready to brew!`;
     root.querySelectorAll<HTMLElement>('.st-slots .slot').forEach((slot, i) => {
