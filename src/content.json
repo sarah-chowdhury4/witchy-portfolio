@@ -12,43 +12,101 @@
     "linkedin": "https://www.linkedin.com/in/sarah--chowdhury"
   },
   "skills": [
-    { "group": "Cloud & Ops", "items": ["Google Cloud", "Microsoft Azure", "Docker", "Linux / shell", "Git"] },
-    { "group": "Programming", "items": ["Python (TensorFlow, Pandas, Scikit-learn)", "Java", "JavaScript", "PHP", "SQL"] },
-    { "group": "AI & data", "items": ["LLM evaluation", "Vision-language models", "Multimodal data", "Prompting (zero-shot, few-shot, chain-of-thought)", "NLP", "Text classification", "Ollama"] },
-    { "group": "Data quality", "items": ["Inter-annotator agreement (Cohen's κ)", "Label-leakage audits", "Negative controls", "Macro-F1", "Bootstrap confidence intervals"] }
+    {
+      "group": "Cloud & Ops",
+      "items": [
+        "Google Cloud",
+        "Microsoft Azure",
+        "Docker",
+        "Linux / shell",
+        "Git"
+      ]
+    },
+    {
+      "group": "Programming",
+      "items": [
+        "Python (TensorFlow, Pandas, Scikit-learn)",
+        "Java",
+        "JavaScript",
+        "PHP",
+        "SQL"
+      ]
+    },
+    {
+      "group": "AI & data",
+      "items": [
+        "LLM evaluation",
+        "Vision-language models",
+        "Multimodal data",
+        "Prompting (zero-shot, few-shot, chain-of-thought)",
+        "NLP",
+        "Text classification",
+        "Ollama"
+      ]
+    },
+    {
+      "group": "Data quality",
+      "items": [
+        "Inter-annotator agreement (Cohen's κ)",
+        "Label-leakage audits",
+        "Negative controls",
+        "Macro-F1",
+        "Bootstrap confidence intervals"
+      ]
+    }
   ],
   "projects": [
     {
       "name": "LLM-Based Semantic Augmentation in Multimodal Classification",
       "kind": "Undergraduate thesis · expected Jan 2027",
-      "tech": ["Python", "Qwen3-VL", "LLM evaluation"],
+      "tech": [
+        "Python",
+        "Qwen3-VL",
+        "LLM evaluation"
+      ],
       "points": [
         "Built and quality-checked a pipeline where a vision-language model describes game frames and dialogue to improve classification; led most of the engineering.",
         "Compared prompting and fusion strategies on 1,600 items; adding descriptions raised macro-F1 from 0.505 to 0.630.",
         "Checked quality with a shuffled-description control, model–human agreement (κ = 0.44) and label-leakage audits; found and fixed a calibration error in late fusion."
       ],
-      "link": "https://github.com/sarah-chowdhury4"
+      "link": "https://github.com/sarah-chowdhury4",
+      "summary": "Measured how vision-language model descriptions improve a multimodal classifier: macro-F1 rose from 0.505 to 0.630."
     },
     {
       "name": "Question and Answer Text Classification",
       "kind": "Course project",
-      "tech": ["TensorFlow", "Scikit-learn", "Word2Vec"],
-      "points": ["Prepared labeled text data for neural and recurrent models; tuned to 70% test accuracy."],
-      "link": "https://github.com/sarah-chowdhury4"
+      "tech": [
+        "TensorFlow",
+        "Scikit-learn",
+        "Word2Vec"
+      ],
+      "points": [],
+      "link": "https://github.com/sarah-chowdhury4",
+      "summary": "Prepared labeled text data and tuned neural and recurrent classifiers to 70% test accuracy."
     },
     {
       "name": "CareMate",
       "kind": "Web app",
-      "tech": ["Laravel", "SQL"],
-      "points": ["Built backend and frontend features."],
-      "link": "https://github.com/sarah-chowdhury4"
+      "tech": [
+        "Laravel",
+        "SQL"
+      ],
+      "points": [],
+      "link": "https://github.com/sarah-chowdhury4",
+      "summary": "Web app built with Laravel and SQL; I built backend and frontend features."
     },
     {
       "name": "PocketFinds",
       "kind": "Web app",
-      "tech": ["MongoDB", "Express", "React", "Node.js"],
-      "points": ["Built backend and frontend features."],
-      "link": "https://github.com/sarah-chowdhury4"
+      "tech": [
+        "MongoDB",
+        "Express",
+        "React",
+        "Node.js"
+      ],
+      "points": [],
+      "link": "https://github.com/sarah-chowdhury4",
+      "summary": "MERN-stack web app; I built backend and frontend features."
     }
   ],
   "experience": [
@@ -68,18 +126,46 @@
       "org": "BRAC University",
       "type": "",
       "dates": "Mar 2026 – Sep 2026",
-      "points": ["Reviewed and debugged programming work for 20+ students, explaining errors and giving consistent, standards-based feedback."]
+      "points": [
+        "Reviewed and debugged programming work for 20+ students, explaining errors and giving consistent, standards-based feedback."
+      ]
     },
     {
       "role": "Video Editor",
       "org": "Amora Media",
       "type": "Remote",
       "dates": "Mar 2025 – Aug 2025",
-      "points": ["Edited 30+ short-form videos in Premiere Pro and After Effects, checking each against client brand guidelines before delivery."]
+      "points": [
+        "Edited 30+ short-form videos in Premiere Pro and After Effects, checking each against client brand guidelines before delivery."
+      ]
     }
   ],
   "certifications": [
-    { "name": "Microsoft Certified: Azure Fundamentals (AZ-900)", "issuer": "Microsoft" },
-    { "name": "Google Cloud Computing Foundations", "issuer": "Google Cloud" }
+    {
+      "name": "Microsoft Certified: Azure Fundamentals (AZ-900)",
+      "issuer": "Microsoft"
+    },
+    {
+      "name": "Google Cloud Computing Foundations",
+      "issuer": "Google Cloud"
+    }
+  ],
+  "highlights": [
+    {
+      "value": "2",
+      "label": "cloud certifications"
+    },
+    {
+      "value": "21",
+      "label": "scholars guided through cloud cert prep"
+    },
+    {
+      "value": "20+",
+      "label": "students tutored in Java"
+    },
+    {
+      "value": "1,600",
+      "label": "items in thesis evaluation"
+    }
   ]
 }
