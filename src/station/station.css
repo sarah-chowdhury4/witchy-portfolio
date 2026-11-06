@@ -116,7 +116,7 @@
   scrollbar-width: thin; scrollbar-color: var(--plank) transparent;
 }
 .st-result:focus-visible { outline: 3px solid var(--cream); outline-offset: -3px; border-radius: 8px; }
-.st-empty { margin: 120px 8px 0; text-align: center; color: #c0c9ee; font-style: italic; text-shadow: 0 1px 2px #1b1d40; }
+.st-empty { margin: 150px 8px 0; text-align: center; color: #c0c9ee; font-style: italic; text-shadow: 0 1px 2px #1b1d40; }
 .st-moon {
   position: absolute; transition: opacity 300ms ease; top: 34px; right: 26px; width: 40px; height: 40px; border-radius: 50%;
   background: var(--cream); box-shadow: 0 0 24px 6px rgba(255, 242, 224, 0.35);
@@ -210,6 +210,17 @@
   .flasks > li.decor { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .st-cat, .st-slots .slot:not(.is-empty) { animation: none; } .flask .potion-sprite { transition: none; } }
+
+/* Brewing effects */
+.fx-layer { position: fixed; inset: 0; z-index: 55; pointer-events: none; overflow: hidden; }
+.fx-bubble { position: absolute; border-radius: 2px; opacity: 0; }
+.fx-orb {
+  position: absolute; border-radius: 50%; opacity: 0;
+  background: radial-gradient(circle at 35% 35%, #fff2e0, #c0c9ee 45%, #898ac4 75%);
+  box-shadow: 0 0 12px 4px rgba(192, 201, 238, 0.7);
+}
+.fx-spark { position: absolute; background-size: 144px 48px; background-repeat: no-repeat; image-rendering: pixelated; }
+.fx-smoke { position: absolute; border-radius: 50%; background: rgba(160, 162, 190, 0.55); filter: blur(1px); }
 
 /* Entry / exit transition layer */
 .bubble-layer { position: fixed; inset: 0; z-index: 60; pointer-events: none; overflow: hidden; }

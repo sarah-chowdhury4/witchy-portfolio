@@ -5,6 +5,7 @@ import { enter, exit } from './transition';
 import { brew, hint, pick } from './brew';
 import { ASSET, potionStyle } from './art';
 import { BOOKS, CANDLE, PLANT } from './decor';
+import { brewing, fizzle, success } from './effects';
 
 type Flask = (typeof content.flasks)[number];
 
@@ -135,7 +136,23 @@ function wireBrewing(root: HTMLElement) {
     const id = e.dataTransfer?.getData('text/plain');
     if (id && LABEL.has(id) && !picks.includes(id)) setPicks(pick(picks, id));
   });
-  brewBtn.addEventListener('click', () => { if (picks.length === 2) showResult(root, picks[0], picks[1]); });
+  let brewingNow = false;
+  brewBtn.addEventListener('click', async () => {
+    if (picks.length !== 2 || brewingNow) return;
+    brewingNow = true;
+    brewBtn.disabled = true;
+    brewBtn.textContent = 'Brewing…';
+    const [a, b] = picks;
+    try {
+      await brewing(root);
+      const reveal = () => showResult(root, a, b);
+      await (brew(ENTRIES, a, b).length ? success(root, reveal) : fizzle(root, reveal));
+    } finally {
+      brewingNow = false;
+      brewBtn.textContent = 'Brew';
+      brewBtn.disabled = picks.length !== 2;
+    }
+  });
   root.addEventListener('station:set-picks', (e) => setPicks((e as CustomEvent<string[]>).detail));
   clearBtn.addEventListener('click', () => setPicks([]));
 
