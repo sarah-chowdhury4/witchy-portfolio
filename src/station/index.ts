@@ -41,8 +41,8 @@ function h<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Record<string, 
 function flaskButton(f: Flask) {
   return h('li', {},
     h('button', { type: 'button', class: `flask flask-${f.kind}`, 'data-flask': f.id, 'aria-pressed': 'false', draggable: 'true' },
-      h('span', { class: 'potion-sprite', 'aria-hidden': 'true', style: potionStyle(f.id) }),
       h('span', { class: 'flask-label' }, f.label),
+      h('span', { class: 'potion-sprite', 'aria-hidden': 'true', style: potionStyle(f.id) }),
     ),
   );
 }
