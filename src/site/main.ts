@@ -14,8 +14,11 @@ function el<K extends keyof HTMLElementTagNameMap>(
   return node;
 }
 
-const extLink = (href: string, text: string) =>
-  el('a', { href, target: '_blank', rel: 'noopener noreferrer' }, text);
+const extLink = (href: string, text: string, srExtra = '') =>
+  el('a', { href, target: '_blank', rel: 'noopener noreferrer' },
+    text,
+    el('span', { class: 'sr-only' }, `${srExtra} (opens in a new tab)`),
+  );
 
 function fill(name: string, ...nodes: Node[]) {
   const target = document.querySelector(`[data-list="${name}"]`);
@@ -31,8 +34,8 @@ function render() {
 
   fill(
     'skills',
-    ...content.skills.map((g) =>
-      el('div', { class: 'skill-group' },
+    ...content.skills.map((g, i) =>
+      el('div', { class: `skill-group tint-${i % 4}` },
         el('h3', {}, g.group),
         el('ul', { class: 'chips' }, ...g.items.map((s) => el('li', {}, s))),
       ),
@@ -47,7 +50,7 @@ function render() {
         el('p', { class: 'meta' }, p.kind),
         el('ul', { class: 'chips small' }, ...p.tech.map((t) => el('li', {}, t))),
         el('ul', { class: 'points' }, ...p.points.map((t) => el('li', {}, t))),
-        el('p', { class: 'card-link' }, extLink(p.link, 'View on GitHub →')),
+        el('p', { class: 'card-link' }, extLink(p.link, 'More on GitHub →', `: ${p.name} and other work`)),
       ),
     ),
   );
@@ -87,5 +90,27 @@ function wireExplore() {
   });
 }
 
+// Highlight the nav link for the section currently on screen.
+function wireNavHighlight() {
+  const links = new Map(
+    [...document.querySelectorAll<HTMLAnchorElement>('.nav ul a')].map((a) => [a.hash.slice(1), a]),
+  );
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        links.forEach((a) => a.removeAttribute('aria-current'));
+        links.get(e.target.id)?.setAttribute('aria-current', 'location');
+      }
+    },
+    { rootMargin: '-45% 0px -50% 0px' },
+  );
+  links.forEach((_, id) => {
+    const section = document.getElementById(id);
+    if (section) observer.observe(section);
+  });
+}
+
 render();
 wireExplore();
+wireNavHighlight();

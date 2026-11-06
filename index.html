@@ -8,30 +8,30 @@
     <meta name="description" content="Sarah Chowdhury, aspiring platform and operations engineer. Projects, skills, experience and certifications." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Jersey+10&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <a class="skip-link" href="#about">Skip to content</a>
+    <a class="skip-link" href="#top">Skip to content</a>
     <header class="site-header">
       <nav class="nav" aria-label="Sections">
-        <a class="nav-home" href="#top">SC</a>
+        <a class="nav-home" href="#top">SC<span class="sr-only">, Sarah Chowdhury: back to top</span></a>
         <ul>
           <li><a href="#about">About</a></li>
           <li><a href="#skills">Skills</a></li>
           <li><a href="#projects">Projects</a></li>
           <li><a href="#experience">Experience</a></li>
-          <li><a href="#certifications">Certs</a></li>
+          <li><a href="#certifications">Certifications</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
     </header>
 
-    <main id="top">
+    <main id="top" tabindex="-1">
       <section class="hero" aria-labelledby="hero-name">
         <h1 id="hero-name" data-field="name"></h1>
         <p class="hero-title" data-field="title"></p>
         <div class="explore">
-          <button id="explore-btn" class="btn btn-explore" type="button">✦ Explore ✦</button>
+          <button id="explore-btn" class="btn btn-explore" type="button"><span aria-hidden="true">✦ </span>Explore<span aria-hidden="true"> ✦</span></button>
           <p class="explore-hint">Psst: brew two of my skills together and see what they made.</p>
           <p id="explore-status" class="explore-status" aria-live="polite"></p>
         </div>
@@ -69,7 +69,8 @@
     </main>
 
     <footer class="site-footer">
-      <p>Built with Vite + TypeScript · Hosted on AWS Amplify · Fonts: Press Start 2P, VT323 (Google Fonts)</p>
+      <p><a href="#top">Back to top ↑</a></p>
+      <p>Built with Vite + TypeScript · Hosted on AWS Amplify · Fonts: Jersey 10, Atkinson Hyperlegible (Google Fonts)</p>
     </footer>
     <script type="module" src="/src/site/main.ts"></script>
   </body>
