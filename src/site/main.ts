@@ -14,8 +14,16 @@ function el<K extends keyof HTMLElementTagNameMap>(
   return node;
 }
 
-const extLink = (href: string, text: string) =>
-  el('a', { href, target: '_blank', rel: 'noopener noreferrer' }, text);
+const srOnly = (text: string) => el('span', { class: 'sr-only' }, text);
+
+const extLink = (href: string, text: string, srExtra = '', cls = '') =>
+  el('a', { href, target: '_blank', rel: 'noopener noreferrer', ...(cls ? { class: cls } : {}) },
+    text,
+    srOnly(`${srExtra} (opens in a new tab)`),
+  );
+
+const chips = (items: string[], cls = 'chips') =>
+  el('ul', { class: cls }, ...items.map((t) => el('li', {}, t)));
 
 function fill(name: string, ...nodes: Node[]) {
   const target = document.querySelector(`[data-list="${name}"]`);
@@ -30,34 +38,54 @@ function render() {
   fill('about', ...content.about.map((p) => el('p', {}, p)));
 
   fill(
+    'highlights',
+    ...content.highlights.map((h) =>
+      el('li', { class: 'card stat' },
+        el('span', { class: 'stat-value' }, h.value),
+        el('span', { class: 'stat-label' }, h.label),
+      ),
+    ),
+  );
+
+  fill(
     'skills',
     ...content.skills.map((g) =>
-      el('div', { class: 'skill-group' },
+      el('article', { class: 'card' },
         el('h3', {}, g.group),
-        el('ul', { class: 'chips' }, ...g.items.map((s) => el('li', {}, s))),
+        chips(g.items),
       ),
     ),
   );
 
   fill(
     'projects',
-    ...content.projects.map((p) =>
-      el('article', { class: 'card' },
-        el('h3', {}, p.name),
+    ...content.projects.map((p) => {
+      const more = p.points.length
+        ? el('details', { class: 'more' },
+            el('summary', {}, 'Show more', srOnly(` about ${p.name}`)),
+            el('ul', { class: 'points' }, ...p.points.map((t) => el('li', {}, t))),
+          )
+        : null;
+      return el('article', { class: 'card project' },
         el('p', { class: 'meta' }, p.kind),
-        el('ul', { class: 'chips small' }, ...p.tech.map((t) => el('li', {}, t))),
-        el('ul', { class: 'points' }, ...p.points.map((t) => el('li', {}, t))),
-        el('p', { class: 'card-link' }, extLink(p.link, 'View on GitHub →')),
-      ),
-    ),
+        el('h3', {}, p.name),
+        chips(p.tech, 'chips small'),
+        el('p', { class: 'summary' }, p.summary),
+        more,
+        el('p', { class: 'card-foot' }, extLink(p.link, 'GitHub →', `: ${p.name} and other work`)),
+      );
+    }),
   );
 
   fill(
     'experience',
     ...content.experience.map((x) =>
-      el('article', { class: 'job' },
-        el('h3', {}, `${x.role} · ${x.org}`),
-        el('p', { class: 'meta' }, [x.type, x.dates].filter(Boolean).join(' · ')),
+      el('article', { class: 'card job' },
+        el('div', { class: 'job-head' },
+          el('h3', {}, x.role),
+          el('p', { class: 'meta' }, x.dates),
+        ),
+        el('p', { class: 'job-org' }, [x.org, x.type].filter(Boolean).join(' · ')),
         el('ul', { class: 'points' }, ...x.points.map((t) => el('li', {}, t))),
       ),
     ),
@@ -66,16 +94,19 @@ function render() {
   fill(
     'certifications',
     ...content.certifications.map((c) =>
-      el('li', {}, el('span', { class: 'cert-name' }, c.name), el('span', { class: 'meta' }, c.issuer)),
+      el('li', { class: 'card cert' },
+        el('span', { class: 'cert-icon', 'aria-hidden': 'true' }, '✦'),
+        el('span', {}, el('span', { class: 'cert-name' }, c.name), el('span', { class: 'meta' }, c.issuer)),
+      ),
     ),
   );
 
   const { email, github, linkedin } = content.contact;
   fill(
     'contact',
-    el('li', {}, 'Email: ', el('a', { href: `mailto:${email}` }, email)),
-    el('li', {}, 'GitHub: ', extLink(github, github.replace('https://', ''))),
-    el('li', {}, 'LinkedIn: ', extLink(linkedin, linkedin.replace('https://www.', ''))),
+    el('li', {}, el('a', { href: `mailto:${email}`, class: 'btn btn-secondary' }, 'Email', srOnly(`: ${email}`))),
+    el('li', {}, extLink(github, 'GitHub', '', 'btn btn-secondary')),
+    el('li', {}, extLink(linkedin, 'LinkedIn', '', 'btn btn-secondary')),
   );
 }
 
@@ -87,5 +118,27 @@ function wireExplore() {
   });
 }
 
+// Highlight the nav link for the section currently on screen.
+function wireNavHighlight() {
+  const links = new Map(
+    [...document.querySelectorAll<HTMLAnchorElement>('.nav ul a')].map((a) => [a.hash.slice(1), a]),
+  );
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        links.forEach((a) => a.removeAttribute('aria-current'));
+        links.get(e.target.id)?.setAttribute('aria-current', 'location');
+      }
+    },
+    { rootMargin: '-45% 0px -50% 0px' },
+  );
+  links.forEach((_, id) => {
+    const section = document.getElementById(id);
+    if (section) observer.observe(section);
+  });
+}
+
 render();
 wireExplore();
+wireNavHighlight();
