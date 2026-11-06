@@ -128,13 +128,19 @@
 .sill-plant { position: absolute; left: 6px; bottom: 20px; }
 .sill-plant svg { display: block; image-rendering: pixelated; }
 .cat-spot { grid-column: span 2; }
+.st-cat-btn {
+  display: block; padding: 0; margin: 0; border: 0; background: none; cursor: pointer;
+  border-radius: 10px; position: relative; z-index: 1; margin-bottom: -20px;
+}
+.st-cat-btn:hover .st-cat { filter: brightness(1.15); }
+.st-cat-btn:focus-visible { outline: 3px solid var(--cream); outline-offset: 4px; }
 .st-cat {
   /* 64x64 frames at 2x; the cat's pixels sit at x 10-53, y 18-50 in each
      frame, so the box is cropped exactly to them and rests on the plank */
   width: 88px; height: 64px; flex: none;
-  /* chin is 10 sprite px (20px) above the tail tip: lower so the chin rests on
-     the plank and the tail drapes over its front edge */
-  margin-bottom: -20px; position: relative; z-index: 1;
+  /* chin is 10 sprite px (20px) above the tail tip: the button is lowered
+     20px so the chin rests on the plank and the tail drapes over its edge */
+  display: block;
   background-size: 768px 128px; background-position: -20px -36px; background-repeat: no-repeat;
   image-rendering: pixelated; pointer-events: none;
   animation: cat-sleep 1.8s steps(6) infinite;
@@ -202,14 +208,54 @@
   .flasks { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); }
 }
 @media (max-width: 600px) {
-  .st-bar { grid-template-columns: 1fr; }
+  .st-bar { grid-template-columns: 1fr auto; }
   .st-exit { grid-row: auto; justify-self: start; }
-  .st-sub { grid-column: 1; }
+  .st-tools { grid-row: 1; grid-column: 2; }
+  .st-bar h2 { grid-column: 1 / -1; }
+  .st-sub { grid-column: 1 / -1; }
   .st-counter { grid-template-columns: auto 1fr; gap: 12px 16px; }
   .st-counter-text { grid-column: 1 / -1; }
   .flasks > li.decor { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .st-cat, .st-slots .slot:not(.is-empty) { animation: none; } .flask .potion-sprite { transition: none; } }
+
+/* Header help button */
+.st-bar { grid-template-columns: auto 1fr auto; }
+.st-sub { grid-column: 2 / 4; }
+.st-tools { grid-row: 1; grid-column: 3; display: flex; gap: 8px; }
+.st-help { width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+  font-family: 'Jersey 10', system-ui, sans-serif; font-size: 1.6rem; line-height: 1;
+  background: transparent; color: var(--cream); border: 2px solid var(--cream);
+}
+.st-help:hover { background: rgba(255, 242, 224, 0.15); }
+.st-sound { position: relative; }
+.st-sound[aria-pressed='true'] { opacity: 0.75; }
+.st-sound[aria-pressed='true']::after { content: ''; position: absolute; left: 9px; right: 9px; top: 50%; height: 3px; background: var(--cream); transform: rotate(-45deg); }
+
+/* Shopkeeper welcome (Stardew-style dialogue box) */
+.st-welcome {
+  position: fixed; z-index: 58; left: 50%; bottom: 24px; transform: translateX(-50%);
+  width: min(680px, calc(100% - 32px));
+  background: var(--cream); color: var(--ink);
+  border: 4px solid var(--plank-lo); border-radius: 12px;
+  box-shadow: 0 0 0 4px var(--plank), 0 10px 0 4px var(--plank-lo);
+  padding: 28px 24px 20px;
+}
+.st-welcome[hidden] { display: none; }
+.st-welcome-name {
+  position: absolute; top: -18px; left: 20px; margin: 0; padding: 2px 14px;
+  font-family: 'Jersey 10', system-ui, sans-serif; font-size: 1.5rem; line-height: 1.2;
+  background: var(--plank-hi); color: var(--ink); border: 3px solid var(--plank-lo); border-radius: 6px;
+}
+.st-welcome-text { margin: 0 0 16px; min-height: 4.2em; font-size: 1.1rem; line-height: 1.45; }
+.st-welcome-actions { display: flex; justify-content: flex-end; gap: 12px; }
+.st-welcome .st-btn { border-color: var(--ink-2); }
+.st-welcome .st-welcome-skip { background: transparent; color: var(--ink); }
+.st-welcome :focus-visible { outline-color: var(--ink); }
+
+/* Secret recipe */
+.st-secret-tag { color: #ffd98a !important; font-weight: 700; letter-spacing: 0.04em; }
+.potion.secret { border-color: #ffd98a; background: rgba(255, 217, 138, 0.1); }
 
 /* Brewing effects */
 .fx-layer { position: fixed; inset: 0; z-index: 55; pointer-events: none; overflow: hidden; }
@@ -220,6 +266,8 @@
   box-shadow: 0 0 12px 4px rgba(192, 201, 238, 0.7);
 }
 .fx-spark { position: absolute; background-size: 144px 48px; background-repeat: no-repeat; image-rendering: pixelated; }
+.fx-heart { position: absolute; opacity: 0; }
+.fx-heart svg { display: block; image-rendering: pixelated; }
 .fx-smoke { position: absolute; border-radius: 50%; background: rgba(160, 162, 190, 0.55); filter: blur(1px); }
 
 /* Entry / exit transition layer */

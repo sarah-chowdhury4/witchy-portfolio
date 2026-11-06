@@ -2,7 +2,9 @@ import './station.css';
 import content from '../content.json';
 import { cauldronSvg } from './cauldron';
 import { enter, exit } from './transition';
-import { brew, hint, pick } from './brew';
+import { brew, hint, pick, secretFor } from './brew';
+import { buildWelcome, seenWelcome } from './welcome';
+import { wireCat } from './cat';
 import { ASSET, potionStyle } from './art';
 import { BOOKS, CANDLE, PLANT } from './decor';
 import { brewing, fizzle, success } from './effects';
@@ -63,7 +65,9 @@ function build(): HTMLElement {
 
   const pot = h('div', { class: 'st-cauldron' });
   pot.innerHTML = cauldronSvg(128);
-  const cat = h('div', { class: 'st-cat', 'aria-hidden': 'true', style: `background-image:url(${ASSET('cat-black-sleep.png')})` });
+  const catName = content.shop.catName;
+  const cat = h('button', { type: 'button', class: 'st-cat-btn', 'aria-label': `Pet ${catName}, the shop cat`, title: `Pet ${catName}` },
+    h('span', { class: 'st-cat', 'aria-hidden': 'true', style: `background-image:url(${ASSET('cat-black-sleep.png')})` }));
   const sillPlant = h('div', { class: 'sill-plant', 'aria-hidden': 'true' });
   sillPlant.innerHTML = PLANT;
 
@@ -71,6 +75,11 @@ function build(): HTMLElement {
     h('header', { class: 'st-bar' },
       exitBtn,
       h('h2', { id: 'station-title' }, 'Spell Station'),
+      h('div', { class: 'st-tools' },
+        h('button', { type: 'button', class: 'st-help st-sound', 'aria-pressed': 'false', 'aria-label': 'Mute sound' }, '♪'),
+        h('button', { type: 'button', class: 'st-help', 'aria-label': "Replay the shopkeeper's welcome" }, '?'),
+      ),
+      h('p', { class: 'sr-only st-cat-status', 'aria-live': 'polite' }),
       h('p', { class: 'st-sub' }, 'Pick two bottles from the shelves, brew, and see what they made.'),
     ),
     h('div', { class: 'st-scene' },
@@ -108,9 +117,18 @@ function build(): HTMLElement {
     ),
   );
 
+  const welcome = buildWelcome(content.shop.welcome, 'Sarah', () =>
+    root.querySelector<HTMLElement>('.flask')?.focus({ preventScroll: true }));
+  root.append(welcome);
+  root.querySelector('.st-help:not(.st-sound)')?.addEventListener('click', () => openWelcome(root));
+  wireCat(root, catName);
   wireBrewing(root);
   root.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') { e.preventDefault(); void closeStation(); }
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      const w = root.querySelector<HTMLElement & { close?: () => void }>('.st-welcome');
+      if (w && !w.hidden) w.close?.(); else void closeStation();
+    }
     if (e.key === 'Tab') trapTab(e, root);
   });
   return root;
@@ -146,7 +164,8 @@ function wireBrewing(root: HTMLElement) {
     try {
       await brewing(root);
       const reveal = () => showResult(root, a, b);
-      await (brew(ENTRIES, a, b).length ? success(root, reveal) : fizzle(root, reveal));
+      const good = brew(ENTRIES, a, b).length > 0 || !!secretFor(content.secrets, a, b);
+      await (good ? success(root, reveal) : fizzle(root, reveal));
     } finally {
       brewingNow = false;
       brewBtn.textContent = 'Brew';
@@ -222,6 +241,19 @@ function showResult(root: HTMLElement, a: string, b: string) {
     );
     return;
   }
+  const secret = secretFor(content.secrets, a, b);
+  if (secret) {
+    out.classList.remove('is-fizzle');
+    out.replaceChildren(
+      h('p', { class: 'st-result-title' },
+        h('span', { class: 'potion-sprite', 'aria-hidden': 'true', style: potionStyle(a, 2) }),
+        h('span', { class: 'potion-sprite', 'aria-hidden': 'true', style: potionStyle(b, 2) }),
+        title),
+      h('p', { class: 'st-result-count st-secret-tag' }, '✦ Secret recipe ✦'),
+      h('div', { class: 'potion secret' }, h('div', { class: 'potion-body' }, h('h4', {}, secret.title), h('p', {}, secret.text))),
+    );
+    return;
+  }
   const tip = hint(ENTRIES, content.flasks, a, b);
   const nodes: (Node | string)[] = [
     h('p', { class: 'st-result-title' }, title),
@@ -239,6 +271,10 @@ function showResult(root: HTMLElement, a: string, b: string) {
     nodes.push(h('p', { class: 'fizzle-hint' }, 'Hint: one of these works with something else.'), tryBtn);
   }
   out.replaceChildren(...nodes);
+}
+
+function openWelcome(root: HTMLElement) {
+  root.querySelector<HTMLElement & { open?: () => void }>('.st-welcome')?.open?.();
 }
 
 function trapTab(e: KeyboardEvent, root: HTMLElement) {
@@ -267,6 +303,7 @@ export async function openStation(from: HTMLElement) {
   }, s);
   busy = false;
   setState('open');
+  if (!seenWelcome()) openWelcome(s);
 }
 
 export async function closeStation() {

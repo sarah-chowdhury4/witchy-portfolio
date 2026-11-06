@@ -64,3 +64,13 @@ export const CANDLE = grid([
   '................',
   '................',
 ], 'candle');
+
+export const HEART = (() => {
+  const rows = ['.RR.RR.', 'RcRRRRR', 'RRRRRRR', 'RRRRRRR', '.RRRRR.', '..RRR..', '...R...'];
+  const fill: Record<string, string> = { R: '#e8879a', c: '#fff2e0' };
+  let rects = '';
+  rows.forEach((row, y) => [...row].forEach((ch, x) => {
+    if (fill[ch]) rects += `<rect x="${x}" y="${y}" width="1" height="1" fill="${fill[ch]}"/>`;
+  }));
+  return `<svg viewBox="0 0 7 7" width="21" height="21" shape-rendering="crispEdges" aria-hidden="true" focusable="false">${rects}</svg>`;
+})();

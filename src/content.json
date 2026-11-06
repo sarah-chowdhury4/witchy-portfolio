@@ -358,5 +358,56 @@
       "label": "Systems",
       "kind": "topic"
     }
+  ],
+  "shop": {
+    "catName": "Luna",
+    "welcome": [
+      "Oh, a visitor! Welcome to my little potion shop.",
+      "I'm Sarah. I love mixing creativity with tech, so I turned my portfolio into a potion shop, inspired by my favourite game, Stardew Valley, and the magic in my favourite manga, Witch Hat Atelier.",
+      "Every bottle on these shelves is a skill or a topic I've worked with. Mix two in the cauldron to see what I made with them.",
+      "Some mixes hide secret recipes about me. And that's Luna, asleep on the shelf. She runs the place."
+    ]
+  },
+  "secrets": [
+    {
+      "pair": [
+        "games",
+        "tech"
+      ],
+      "title": "My favourite game",
+      "text": "Stardew Valley, all the way. It's a big part of why I'm passionate about combining creativity and tech, and why this portfolio is a pixel potion shop."
+    },
+    {
+      "pair": [
+        "media",
+        "discovery"
+      ],
+      "title": "On my bookshelf",
+      "text": "Classic fiction and manga. My favourite manga of all time is Witch Hat Atelier, and its magic is where this witchy spell station came from."
+    },
+    {
+      "pair": [
+        "video-editing",
+        "games"
+      ],
+      "title": "My newest hobby",
+      "text": "I recently picked up art: one more way to mix creativity with the things I build."
+    },
+    {
+      "pair": [
+        "google-cloud",
+        "systems"
+      ],
+      "title": "Where I'm heading",
+      "text": "I want to work in platform engineering and operations: keeping systems reliable, automated and well documented, so other people can build with confidence."
+    },
+    {
+      "pair": [
+        "data-quality",
+        "mentoring"
+      ],
+      "title": "What I care about",
+      "text": "Whether it's a thesis pipeline or a scholar's slides, I like checking work carefully and giving feedback that is clear and kind."
+    }
   ]
 }

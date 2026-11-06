@@ -37,3 +37,10 @@ export function unknownTags(items: Item[], flasks: Flask[]): string[] {
   const ids = new Set(flasks.map((f) => f.id));
   return [...new Set(items.flatMap((i) => i.tags.filter((t) => !ids.has(t))))];
 }
+
+export interface Secret { pair: string[]; title: string; text: string }
+
+/** A secret personal recipe for this pair (order doesn't matter), if any. */
+export function secretFor<T extends Secret>(secrets: T[], a: string, b: string): T | undefined {
+  return secrets.find((s) => s.pair.includes(a) && s.pair.includes(b) && a !== b);
+}
