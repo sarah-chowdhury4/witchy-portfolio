@@ -4,16 +4,73 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Witchy Portfolio</title>
+    <title>Sarah Chowdhury · Witchy Portfolio</title>
+    <meta name="description" content="Sarah Chowdhury, aspiring platform and operations engineer. Projects, skills, experience and certifications." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <main id="app">
-      <h1>Hello, world</h1>
-      <p>Stage 0: tech stack check.</p>
+    <a class="skip-link" href="#about">Skip to content</a>
+    <header class="site-header">
+      <nav class="nav" aria-label="Sections">
+        <a class="nav-home" href="#top">SC</a>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#certifications">Certs</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-name">
+        <h1 id="hero-name" data-field="name"></h1>
+        <p class="hero-title" data-field="title"></p>
+        <div class="explore">
+          <button id="explore-btn" class="btn btn-explore" type="button">✦ Explore ✦</button>
+          <p class="explore-hint">Psst: brew two of my skills together and see what they made.</p>
+          <p id="explore-status" class="explore-status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section id="about" class="panel" aria-labelledby="about-h">
+        <h2 id="about-h">About me</h2>
+        <div data-list="about"></div>
+      </section>
+
+      <section id="skills" class="panel" aria-labelledby="skills-h">
+        <h2 id="skills-h">Skills</h2>
+        <div class="skill-groups" data-list="skills"></div>
+      </section>
+
+      <section id="projects" class="panel" aria-labelledby="projects-h">
+        <h2 id="projects-h">Projects</h2>
+        <div class="cards" data-list="projects"></div>
+      </section>
+
+      <section id="experience" class="panel" aria-labelledby="experience-h">
+        <h2 id="experience-h">Experience</h2>
+        <div class="timeline" data-list="experience"></div>
+      </section>
+
+      <section id="certifications" class="panel" aria-labelledby="certs-h">
+        <h2 id="certs-h">Certifications</h2>
+        <ul class="certs" data-list="certifications"></ul>
+      </section>
+
+      <section id="contact" class="panel" aria-labelledby="contact-h">
+        <h2 id="contact-h">Contact</h2>
+        <ul class="contact" data-list="contact"></ul>
+      </section>
     </main>
-    <script type="module" src="/src/main.ts"></script>
+
+    <footer class="site-footer">
+      <p>Built with Vite + TypeScript · Hosted on AWS Amplify · Fonts: Press Start 2P, VT323 (Google Fonts)</p>
+    </footer>
+    <script type="module" src="/src/site/main.ts"></script>
   </body>
 </html>

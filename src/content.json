@@ -1,0 +1,85 @@
+{
+  "name": "Sarah Chowdhury",
+  "title": "Aspiring Platform & Operations Engineer",
+  "about": [
+    "I'm a Computer Science student at BRAC University (graduating Feb 2027), working toward platform engineering and operations.",
+    "I like systems that are reliable, checked and well documented. My thesis pipeline has controls and audits built in, and as a volunteer Track Lead I guide 21 scholars through Google Cloud certification prep.",
+    "AZ-900 certified · Google Cloud Computing Foundations completed."
+  ],
+  "contact": {
+    "email": "sarahchowdhurycontact@gmail.com",
+    "github": "https://github.com/sarah-chowdhury4",
+    "linkedin": "https://www.linkedin.com/in/sarah--chowdhury"
+  },
+  "skills": [
+    { "group": "Cloud & Ops", "items": ["Google Cloud", "Microsoft Azure", "Docker", "Linux / shell", "Git"] },
+    { "group": "Programming", "items": ["Python (TensorFlow, Pandas, Scikit-learn)", "Java", "JavaScript", "PHP", "SQL"] },
+    { "group": "AI & data", "items": ["LLM evaluation", "Vision-language models", "Multimodal data", "Prompting (zero-shot, few-shot, chain-of-thought)", "NLP", "Text classification", "Ollama"] },
+    { "group": "Data quality", "items": ["Inter-annotator agreement (Cohen's κ)", "Label-leakage audits", "Negative controls", "Macro-F1", "Bootstrap confidence intervals"] }
+  ],
+  "projects": [
+    {
+      "name": "LLM-Based Semantic Augmentation in Multimodal Classification",
+      "kind": "Undergraduate thesis · expected Jan 2027",
+      "tech": ["Python", "Qwen3-VL", "LLM evaluation"],
+      "points": [
+        "Built and quality-checked a pipeline where a vision-language model describes game frames and dialogue to improve classification; led most of the engineering.",
+        "Compared prompting and fusion strategies on 1,600 items; adding descriptions raised macro-F1 from 0.505 to 0.630.",
+        "Checked quality with a shuffled-description control, model–human agreement (κ = 0.44) and label-leakage audits; found and fixed a calibration error in late fusion."
+      ],
+      "link": "https://github.com/sarah-chowdhury4"
+    },
+    {
+      "name": "Question and Answer Text Classification",
+      "kind": "Course project",
+      "tech": ["TensorFlow", "Scikit-learn", "Word2Vec"],
+      "points": ["Prepared labeled text data for neural and recurrent models; tuned to 70% test accuracy."],
+      "link": "https://github.com/sarah-chowdhury4"
+    },
+    {
+      "name": "CareMate",
+      "kind": "Web app",
+      "tech": ["Laravel", "SQL"],
+      "points": ["Built backend and frontend features."],
+      "link": "https://github.com/sarah-chowdhury4"
+    },
+    {
+      "name": "PocketFinds",
+      "kind": "Web app",
+      "tech": ["MongoDB", "Express", "React", "Node.js"],
+      "points": ["Built backend and frontend features."],
+      "link": "https://github.com/sarah-chowdhury4"
+    }
+  ],
+  "experience": [
+    {
+      "role": "Track Lead",
+      "org": "Mentor Me Collective",
+      "type": "Volunteer, remote",
+      "dates": "Aug 2026 – Present",
+      "points": [
+        "Review scholars' slides for quality and completeness before weekly sessions, flagging issues ahead of deadlines.",
+        "Guide 21 scholars through Google Cloud certification preparation via Slack and one-on-one office hours.",
+        "Maintain attendance and engagement spreadsheets the team uses to decide on scholar participation."
+      ]
+    },
+    {
+      "role": "Student Tutor, Introduction to Programming in Java",
+      "org": "BRAC University",
+      "type": "",
+      "dates": "Mar 2026 – Sep 2026",
+      "points": ["Reviewed and debugged programming work for 20+ students, explaining errors and giving consistent, standards-based feedback."]
+    },
+    {
+      "role": "Video Editor",
+      "org": "Amora Media",
+      "type": "Remote",
+      "dates": "Mar 2025 – Aug 2025",
+      "points": ["Edited 30+ short-form videos in Premiere Pro and After Effects, checking each against client brand guidelines before delivery."]
+    }
+  ],
+  "certifications": [
+    { "name": "Microsoft Certified: Azure Fundamentals (AZ-900)", "issuer": "Microsoft" },
+    { "name": "Google Cloud Computing Foundations", "issuer": "Google Cloud" }
+  ]
+}

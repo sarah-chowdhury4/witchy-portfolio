@@ -1,0 +1,115 @@
+:root {
+  --bg: #1b1426;
+  --panel: #261c35;
+  --panel-edge: #3d2e55;
+  --ink: #efe6d2;
+  --muted: #b9abcc;
+  --potion: #7bd88f;
+  --gold: #e8c35a;
+  --focus: #ffe58a;
+  --px: 4px;
+  --head: 'Press Start 2P', monospace;
+  --body: 'VT323', monospace;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.4rem;
+  line-height: 1.35;
+}
+
+a { color: var(--potion); }
+a:hover { color: var(--gold); }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+h1, h2, h3 { font-family: var(--head); line-height: 1.5; margin: 0 0 0.75em; }
+h1 { font-size: clamp(1.1rem, 4vw, 2rem); color: var(--gold); }
+h2 { font-size: clamp(0.9rem, 2.6vw, 1.15rem); color: var(--gold); }
+h3 { font-size: 0.7rem; color: var(--ink); }
+p { margin: 0 0 0.6em; }
+
+/* Pixel border: stepped corners via box-shadow */
+.pixel-box, .panel, .card, .btn {
+  box-shadow:
+    0 calc(-1 * var(--px)) 0 0 var(--panel-edge),
+    0 var(--px) 0 0 var(--panel-edge),
+    calc(-1 * var(--px)) 0 0 0 var(--panel-edge),
+    var(--px) 0 0 0 var(--panel-edge);
+}
+
+.skip-link {
+  position: absolute; left: 8px; top: -60px;
+  background: var(--gold); color: var(--bg); padding: 8px 12px; z-index: 10;
+  font-family: var(--head); font-size: 0.6rem;
+}
+.skip-link:focus { top: 8px; }
+
+/* Header + nav */
+.site-header {
+  position: sticky; top: 0; z-index: 5;
+  background: var(--bg);
+  border-bottom: var(--px) solid var(--panel-edge);
+}
+.nav {
+  max-width: 960px; margin: 0 auto; padding: 10px 16px;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.nav-home { font-family: var(--head); font-size: 0.8rem; color: var(--gold); text-decoration: none; }
+.nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.nav ul a { font-family: var(--head); font-size: 0.55rem; color: var(--ink); text-decoration: none; padding: 6px 0; display: inline-block; }
+.nav ul a:hover { color: var(--potion); }
+
+main { max-width: 960px; margin: 0 auto; padding: 0 16px 48px; }
+
+/* Hero */
+.hero { text-align: center; padding: 64px 0 48px; }
+.hero-title { color: var(--muted); font-size: 1.6rem; }
+.explore { margin-top: 32px; }
+.btn {
+  font-family: var(--head); font-size: 0.8rem;
+  padding: 14px 20px; border: 0; cursor: pointer;
+  background: var(--potion); color: var(--bg);
+}
+.btn:hover { background: var(--gold); }
+.btn:active { transform: translateY(2px); }
+.explore-hint { color: var(--muted); margin-top: 16px; }
+.explore-status { color: var(--gold); min-height: 1.4em; }
+
+/* Panels */
+.panel { background: var(--panel); padding: 24px; margin: 40px var(--px); }
+
+.skill-groups { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li { background: var(--bg); border: 2px solid var(--panel-edge); padding: 2px 10px; }
+.chips.small li { font-size: 1.1rem; color: var(--muted); }
+
+.cards { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.card { background: var(--bg); padding: 16px; margin: var(--px); display: flex; flex-direction: column; gap: 8px; }
+.card h3 { margin: 0; }
+.card-link { margin-top: auto; }
+
+.meta { color: var(--muted); font-size: 1.15rem; margin: 0; }
+.points { margin: 0; padding-left: 1.1em; }
+.points li { margin-bottom: 4px; }
+
+.job + .job { margin-top: 24px; padding-top: 20px; border-top: 2px dashed var(--panel-edge); }
+
+.certs, .contact { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.certs li { display: flex; flex-direction: column; }
+.cert-name::before { content: '★ '; color: var(--gold); }
+.contact a { word-break: break-all; }
+
+.site-footer { text-align: center; color: var(--muted); font-size: 1.1rem; padding: 24px 16px 40px; }
+
+@media (max-width: 480px) {
+  .panel { padding: 16px; }
+  .hero { padding: 40px 0 32px; }
+  .nav ul a { font-size: 0.5rem; }
+}
