@@ -57,6 +57,11 @@
 }
 .flask-topic { background: #a2aadb; }
 .flask:hover { border-color: #33356f; }
+.flask[aria-pressed='true'] { background: #33356f; color: #fff2e0; border-color: #24264f; }
+.flask[aria-pressed='true'] .flask-glass { background: #a2aadb; border-color: #fff2e0; }
+.st-brew.is-drop { outline: 3px dashed #33356f; outline-offset: -10px; }
+.st-result ul { margin: 8px 0 0; padding-left: 1.2em; }
+.st-result-title { font-weight: 700; margin: 0; }
 .flask-glass { flex: none; width: 14px; height: 18px; border-radius: 3px 3px 7px 7px; background: #fff2e0; border: 2px solid #33356f; }
 
 .st-brew { text-align: center; display: grid; justify-items: center; gap: 16px; }

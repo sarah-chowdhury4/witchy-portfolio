@@ -2,8 +2,21 @@ import './station.css';
 import content from '../content.json';
 import { cauldronSvg } from './cauldron';
 import { enter, exit } from './transition';
+import { brew, hint, pick } from './brew';
 
 type Flask = (typeof content.flasks)[number];
+
+export interface Entry {
+  name: string; kind: string; summary: string; tech: string[]; link?: string; tags: string[];
+}
+const ENTRIES: Entry[] = [
+  ...content.projects.map((p) => ({ name: p.name, kind: p.kind, summary: p.summary, tech: p.tech, link: p.link, tags: p.tags })),
+  ...content.experience.map((x) => ({
+    name: `${x.role} · ${x.org}`, kind: `Experience · ${x.dates}`, summary: x.points[0] ?? '', tech: [], tags: x.tags,
+  })),
+];
+const LABEL = new Map(content.flasks.map((f) => [f.id, f.label]));
+let picks: string[] = [];
 
 let station: HTMLElement | null = null;
 let trigger: HTMLElement | null = null;
@@ -25,7 +38,7 @@ function h<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Record<string, 
 
 function flaskButton(f: Flask) {
   return h('li', {},
-    h('button', { type: 'button', class: `flask flask-${f.kind}`, 'data-flask': f.id, 'aria-pressed': 'false' },
+    h('button', { type: 'button', class: `flask flask-${f.kind}`, 'data-flask': f.id, 'aria-pressed': 'false', draggable: 'true' },
       h('span', { class: 'flask-glass', 'aria-hidden': 'true' }),
       h('span', { class: 'flask-label' }, f.label),
     ),
@@ -59,8 +72,8 @@ function build(): HTMLElement {
         pot,
         h('p', { class: 'st-picks', 'aria-live': 'polite' }, 'Your cauldron is empty. Pick two flasks.'),
         h('div', { class: 'st-actions' },
-          h('button', { type: 'button', class: 'st-btn st-btn-primary', disabled: '' }, 'Brew'),
-          h('button', { type: 'button', class: 'st-btn', disabled: '' }, 'Clear'),
+          h('button', { type: 'button', class: 'st-btn st-btn-primary st-brew-btn', disabled: '' }, 'Brew'),
+          h('button', { type: 'button', class: 'st-btn st-clear-btn', disabled: '' }, 'Clear'),
         ),
       ),
       h('section', { class: 'st-panel st-results', 'aria-labelledby': 'results-h' },
@@ -70,11 +83,67 @@ function build(): HTMLElement {
     ),
   );
 
+  wireBrewing(root);
   root.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') { e.preventDefault(); void closeStation(); }
     if (e.key === 'Tab') trapTab(e, root);
   });
   return root;
+}
+
+function wireBrewing(root: HTMLElement) {
+  const brewArea = root.querySelector<HTMLElement>('.st-brew')!;
+  const brewBtn = root.querySelector<HTMLButtonElement>('.st-brew-btn')!;
+  const clearBtn = root.querySelector<HTMLButtonElement>('.st-clear-btn')!;
+
+  root.querySelectorAll<HTMLButtonElement>('.flask').forEach((btn) => {
+    btn.addEventListener('click', () => setPicks(pick(picks, btn.dataset.flask!)));
+    btn.addEventListener('dragstart', (e) => {
+      e.dataTransfer?.setData('text/plain', btn.dataset.flask!);
+      if (e.dataTransfer) e.dataTransfer.effectAllowed = 'copy';
+    });
+  });
+  brewArea.addEventListener('dragover', (e) => { e.preventDefault(); brewArea.classList.add('is-drop'); });
+  brewArea.addEventListener('dragleave', () => brewArea.classList.remove('is-drop'));
+  brewArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    brewArea.classList.remove('is-drop');
+    const id = e.dataTransfer?.getData('text/plain');
+    if (id && LABEL.has(id) && !picks.includes(id)) setPicks(pick(picks, id));
+  });
+  brewBtn.addEventListener('click', () => { if (picks.length === 2) showResult(root, picks[0], picks[1]); });
+  clearBtn.addEventListener('click', () => setPicks([]));
+
+  function setPicks(next: string[]) {
+    picks = next;
+    root.querySelectorAll<HTMLButtonElement>('.flask').forEach((b) =>
+      b.setAttribute('aria-pressed', String(picks.includes(b.dataset.flask!))));
+    const names = picks.map((id) => LABEL.get(id));
+    root.querySelector('.st-picks')!.textContent =
+      picks.length === 0 ? 'Your cauldron is empty. Pick two flasks.'
+      : picks.length === 1 ? `In the cauldron: ${names[0]}. Pick one more.`
+      : `In the cauldron: ${names[0]} + ${names[1]}. Ready to brew!`;
+    brewBtn.disabled = picks.length !== 2;
+    clearBtn.disabled = picks.length === 0;
+  }
+}
+
+function showResult(root: HTMLElement, a: string, b: string) {
+  const out = root.querySelector<HTMLElement>('.st-result')!;
+  const found = brew(ENTRIES, a, b);
+  const title = `${LABEL.get(a)} + ${LABEL.get(b)}`;
+  if (found.length) {
+    out.replaceChildren(
+      h('p', { class: 'st-result-title' }, `${title}: ${found.length} found`),
+      h('ul', {}, ...found.map((e) => h('li', {}, e.name))),
+    );
+  } else {
+    const tip = hint(ENTRIES, content.flasks, a, b);
+    out.replaceChildren(
+      h('p', { class: 'st-result-title' }, `${title}: nothing yet`),
+      tip ? h('p', {}, `Try ${LABEL.get(tip.keep)} + ${LABEL.get(tip.partner)}.`) : '',
+    );
+  }
 }
 
 function trapTab(e: KeyboardEvent, root: HTMLElement) {
