@@ -70,7 +70,13 @@
         "Checked quality with a shuffled-description control, model–human agreement (κ = 0.44) and label-leakage audits; found and fixed a calibration error in late fusion."
       ],
       "link": "https://github.com/sarah-chowdhury4",
-      "summary": "Measured how vision-language model descriptions improve a multimodal classifier: macro-F1 rose from 0.505 to 0.630."
+      "summary": "Measured how vision-language model descriptions improve a multimodal classifier: macro-F1 rose from 0.505 to 0.630.",
+      "tags": [
+        "python",
+        "llm",
+        "data-quality",
+        "games"
+      ]
     },
     {
       "name": "Question and Answer Text Classification",
@@ -82,18 +88,30 @@
       ],
       "points": [],
       "link": "https://github.com/sarah-chowdhury4",
-      "summary": "Prepared labeled text data and tuned neural and recurrent classifiers to 70% test accuracy."
+      "summary": "Prepared labeled text data and tuned neural and recurrent classifiers to 70% test accuracy.",
+      "tags": [
+        "python",
+        "ml",
+        "nlp"
+      ]
     },
     {
       "name": "CareMate",
       "kind": "Web app",
       "tech": [
         "Laravel",
-        "SQL"
+        "SQL",
+        "Tailwind"
       ],
       "points": [],
       "link": "https://github.com/sarah-chowdhury4",
-      "summary": "Web app built with Laravel and SQL; I built backend and frontend features."
+      "summary": "Web app built with Laravel and SQL; I built backend and frontend features.",
+      "tags": [
+        "php",
+        "sql",
+        "tailwind",
+        "healthcare"
+      ]
     },
     {
       "name": "PocketFinds",
@@ -102,11 +120,50 @@
         "MongoDB",
         "Express",
         "React",
-        "Node.js"
+        "Node.js",
+        "Tailwind"
       ],
       "points": [],
       "link": "https://github.com/sarah-chowdhury4",
-      "summary": "MERN-stack web app; I built backend and frontend features."
+      "summary": "MERN-stack web app; I built backend and frontend features.",
+      "tags": [
+        "javascript",
+        "tailwind",
+        "food",
+        "discovery",
+        "tech"
+      ]
+    },
+    {
+      "name": "Compiler",
+      "kind": "Course project",
+      "tech": [
+        "C",
+        "Flex",
+        "Bison"
+      ],
+      "summary": "Compiler built with Flex, Bison and C.",
+      "points": [],
+      "link": "https://github.com/sarah-chowdhury4",
+      "tags": [
+        "c",
+        "systems"
+      ]
+    },
+    {
+      "name": "xv6 Operating System",
+      "kind": "Course project",
+      "tech": [
+        "C",
+        "xv6"
+      ],
+      "summary": "Small operating system built on xv6.",
+      "points": [],
+      "link": "https://github.com/sarah-chowdhury4",
+      "tags": [
+        "c",
+        "systems"
+      ]
     }
   ],
   "experience": [
@@ -119,6 +176,12 @@
         "Review scholars' slides for quality and completeness before weekly sessions, flagging issues ahead of deadlines.",
         "Guide 21 scholars through Google Cloud certification preparation via Slack and one-on-one office hours.",
         "Maintain attendance and engagement spreadsheets the team uses to decide on scholar participation."
+      ],
+      "tags": [
+        "google-cloud",
+        "mentoring",
+        "quality-review",
+        "education"
       ]
     },
     {
@@ -128,6 +191,12 @@
       "dates": "Mar 2026 – Sep 2026",
       "points": [
         "Reviewed and debugged programming work for 20+ students, explaining errors and giving consistent, standards-based feedback."
+      ],
+      "tags": [
+        "java",
+        "mentoring",
+        "quality-review",
+        "education"
       ]
     },
     {
@@ -137,6 +206,11 @@
       "dates": "Mar 2025 – Aug 2025",
       "points": [
         "Edited 30+ short-form videos in Premiere Pro and After Effects, checking each against client brand guidelines before delivery."
+      ],
+      "tags": [
+        "video-editing",
+        "quality-review",
+        "media"
       ]
     }
   ],
@@ -166,6 +240,123 @@
     {
       "value": "1,600",
       "label": "items in thesis evaluation"
+    }
+  ],
+  "flasks": [
+    {
+      "id": "python",
+      "label": "Python",
+      "kind": "skill"
+    },
+    {
+      "id": "java",
+      "label": "Java",
+      "kind": "skill"
+    },
+    {
+      "id": "javascript",
+      "label": "JavaScript",
+      "kind": "skill"
+    },
+    {
+      "id": "php",
+      "label": "PHP",
+      "kind": "skill"
+    },
+    {
+      "id": "c",
+      "label": "C",
+      "kind": "skill"
+    },
+    {
+      "id": "sql",
+      "label": "SQL",
+      "kind": "skill"
+    },
+    {
+      "id": "tailwind",
+      "label": "Tailwind",
+      "kind": "skill"
+    },
+    {
+      "id": "ml",
+      "label": "Machine learning",
+      "kind": "skill"
+    },
+    {
+      "id": "nlp",
+      "label": "NLP",
+      "kind": "skill"
+    },
+    {
+      "id": "llm",
+      "label": "LLMs & prompting",
+      "kind": "skill"
+    },
+    {
+      "id": "data-quality",
+      "label": "Data quality",
+      "kind": "skill"
+    },
+    {
+      "id": "google-cloud",
+      "label": "Google Cloud",
+      "kind": "skill"
+    },
+    {
+      "id": "mentoring",
+      "label": "Mentoring",
+      "kind": "skill"
+    },
+    {
+      "id": "quality-review",
+      "label": "Quality review",
+      "kind": "skill"
+    },
+    {
+      "id": "video-editing",
+      "label": "Video editing",
+      "kind": "skill"
+    },
+    {
+      "id": "healthcare",
+      "label": "Healthcare",
+      "kind": "topic"
+    },
+    {
+      "id": "food",
+      "label": "Food",
+      "kind": "topic"
+    },
+    {
+      "id": "discovery",
+      "label": "Discovery",
+      "kind": "topic"
+    },
+    {
+      "id": "tech",
+      "label": "Tech",
+      "kind": "topic"
+    },
+    {
+      "id": "games",
+      "label": "Games",
+      "kind": "topic"
+    },
+    {
+      "id": "education",
+      "label": "Education",
+      "kind": "topic"
+    },
+    {
+      "id": "media",
+      "label": "Media",
+      "kind": "topic"
+    },
+    {
+      "id": "systems",
+      "label": "Systems",
+      "kind": "topic"
     }
   ]
 }

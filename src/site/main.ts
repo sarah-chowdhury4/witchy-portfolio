@@ -113,8 +113,14 @@ function render() {
 function wireExplore() {
   const btn = document.querySelector<HTMLButtonElement>('#explore-btn');
   const status = document.querySelector<HTMLParagraphElement>('#explore-status');
-  btn?.addEventListener('click', () => {
-    if (status) status.textContent = 'The spell station is still brewing. Check back soon!';
+  btn?.addEventListener('click', async () => {
+    try {
+      const { openStation } = await import('../station');
+      await openStation(btn);
+    } catch (err) {
+      console.error(err);
+      if (status) status.textContent = 'The spell station failed to open. Please refresh and try again.';
+    }
   });
 }
 
