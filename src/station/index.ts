@@ -77,9 +77,15 @@ function build(): HTMLElement {
         h('h3', { id: 'shelf-skills', class: 'shelf-sign' }, 'Skills'),
         h('ul', { class: 'flasks' }, ...skills.map(flaskButton)),
       ),
-      h('div', { class: 'st-window', 'aria-hidden': 'true' },
-        h('div', { class: 'st-window-glass' }, h('span', { class: 'st-moon' })),
-        h('div', { class: 'st-sill' }, sillPlant),
+      h('section', { class: 'st-window', 'aria-labelledby': 'results-h' },
+        h('div', { class: 'st-window-glass' },
+          h('span', { class: 'st-moon', 'aria-hidden': 'true' }),
+          h('span', { class: 'st-mullions', 'aria-hidden': 'true' }),
+          h('h3', { id: 'results-h', class: 'sr-only' }, 'Your brew'),
+          h('div', { class: 'st-result', role: 'region', 'aria-labelledby': 'results-h', 'aria-live': 'polite', tabindex: '0' },
+            h('p', { class: 'st-empty' }, 'Brew two bottles and your discoveries will appear here.')),
+        ),
+        h('div', { class: 'st-sill', 'aria-hidden': 'true' }, sillPlant),
       ),
       h('section', { class: 'st-shelf st-shelf-topics', 'aria-labelledby': 'shelf-topics' },
         h('h3', { id: 'shelf-topics', class: 'shelf-sign' }, 'Topics'),
@@ -98,10 +104,6 @@ function build(): HTMLElement {
           h('button', { type: 'button', class: 'st-btn st-clear-btn', disabled: '' }, 'Clear'),
         ),
       ),
-    ),
-    h('section', { class: 'st-results', 'aria-labelledby': 'results-h' },
-      h('h3', { id: 'results-h' }, 'Your brew'),
-      h('div', { class: 'st-result', 'aria-live': 'polite', tabindex: '-1' }, h('p', { class: 'st-empty' }, 'Nothing brewed yet.')),
     ),
   );
 
@@ -183,19 +185,30 @@ function showResult(root: HTMLElement, a: string, b: string) {
   const found = brew(ENTRIES, a, b);
   const title = `${LABEL.get(a)} + ${LABEL.get(b)}`;
   out.classList.toggle('is-fizzle', !found.length);
+  out.closest('.st-window-glass')?.classList.add('has-result');
+  out.scrollTop = 0;
+  const glass = out.closest('.st-window-glass');
+  if (glass) {
+    const r = glass.getBoundingClientRect();
+    if (r.top < 0 || r.bottom > window.innerHeight) {
+      glass.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }
+  }
   if (found.length) {
     out.replaceChildren(
       h('p', { class: 'st-result-title' },
         h('span', { class: 'potion-sprite', 'aria-hidden': 'true', style: potionStyle(a, 2) }),
         h('span', { class: 'potion-sprite', 'aria-hidden': 'true', style: potionStyle(b, 2) }),
-        `${title}: ${found.length === 1 ? '1 discovery' : `${found.length} discoveries`}`),
+        title),
+      h('p', { class: 'st-result-count' }, found.length === 1 ? '1 discovery' : `${found.length} discoveries`),
       h('ul', { class: 'potions' }, ...found.map(potionCard)),
     );
     return;
   }
   const tip = hint(ENTRIES, content.flasks, a, b);
   const nodes: (Node | string)[] = [
-    h('p', { class: 'st-result-title' }, `${title}: fizzle`),
+    h('p', { class: 'st-result-title' }, title),
+    h('p', { class: 'st-result-count' }, 'Fizzle!'),
     h('p', { class: 'fizzle-line' }, fizzleFor(a, b)),
   ];
   if (tip) {
