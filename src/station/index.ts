@@ -78,7 +78,7 @@ function build(): HTMLElement {
       ),
       h('section', { class: 'st-panel st-results', 'aria-labelledby': 'results-h' },
         h('h3', { id: 'results-h' }, 'Your brew'),
-        h('div', { class: 'st-result', 'aria-live': 'polite' }, h('p', { class: 'st-empty' }, 'Nothing brewed yet.')),
+        h('div', { class: 'st-result', 'aria-live': 'polite', tabindex: '-1' }, h('p', { class: 'st-empty' }, 'Nothing brewed yet.')),
       ),
     ),
   );
@@ -112,6 +112,7 @@ function wireBrewing(root: HTMLElement) {
     if (id && LABEL.has(id) && !picks.includes(id)) setPicks(pick(picks, id));
   });
   brewBtn.addEventListener('click', () => { if (picks.length === 2) showResult(root, picks[0], picks[1]); });
+  root.addEventListener('station:set-picks', (e) => setPicks((e as CustomEvent<string[]>).detail));
   clearBtn.addEventListener('click', () => setPicks([]));
 
   function setPicks(next: string[]) {
@@ -128,22 +129,56 @@ function wireBrewing(root: HTMLElement) {
   }
 }
 
+const FIZZLES = [
+  'The brew fizzles. A puff of smoke, and nothing else.',
+  'Bubble, bubble... nope. These two haven\'t met yet.',
+  'The cauldron sputters and goes quiet.',
+  'Pfft. The cat sniffs the smoke and walks away.',
+];
+const fizzleFor = (a: string, b: string) =>
+  FIZZLES[[...(a + b)].reduce((n, ch) => n + ch.charCodeAt(0), 0) % FIZZLES.length];
+
+function potionCard(e: Entry) {
+  return h('li', { class: 'potion' },
+    h('span', { class: 'potion-icon', 'aria-hidden': 'true' }),
+    h('div', { class: 'potion-body' },
+      h('p', { class: 'potion-kind' }, e.kind),
+      h('h4', {}, e.name),
+      h('p', {}, e.summary),
+      ...(e.link ? [h('a', { href: e.link, target: '_blank', rel: 'noopener noreferrer' },
+        'GitHub →', h('span', { class: 'sr-only' }, ` ${e.name} (opens in a new tab)`))] : []),
+    ),
+  );
+}
+
 function showResult(root: HTMLElement, a: string, b: string) {
   const out = root.querySelector<HTMLElement>('.st-result')!;
   const found = brew(ENTRIES, a, b);
   const title = `${LABEL.get(a)} + ${LABEL.get(b)}`;
+  out.classList.toggle('is-fizzle', !found.length);
   if (found.length) {
     out.replaceChildren(
-      h('p', { class: 'st-result-title' }, `${title}: ${found.length} found`),
-      h('ul', {}, ...found.map((e) => h('li', {}, e.name))),
+      h('p', { class: 'st-result-title' }, `${title}: ${found.length === 1 ? '1 discovery' : `${found.length} discoveries`}`),
+      h('ul', { class: 'potions' }, ...found.map(potionCard)),
     );
-  } else {
-    const tip = hint(ENTRIES, content.flasks, a, b);
-    out.replaceChildren(
-      h('p', { class: 'st-result-title' }, `${title}: nothing yet`),
-      tip ? h('p', {}, `Try ${LABEL.get(tip.keep)} + ${LABEL.get(tip.partner)}.`) : '',
-    );
+    return;
   }
+  const tip = hint(ENTRIES, content.flasks, a, b);
+  const nodes: (Node | string)[] = [
+    h('p', { class: 'st-result-title' }, `${title}: fizzle`),
+    h('p', { class: 'fizzle-line' }, fizzleFor(a, b)),
+  ];
+  if (tip) {
+    const tryBtn = h('button', { type: 'button', class: 'st-btn st-try' },
+      `Try ${LABEL.get(tip.keep)} + ${LABEL.get(tip.partner)}`);
+    tryBtn.addEventListener('click', () => {
+      root.dispatchEvent(new CustomEvent('station:set-picks', { detail: [tip.keep, tip.partner] }));
+      showResult(root, tip.keep, tip.partner);
+      root.querySelector<HTMLElement>('.st-result')?.focus();
+    });
+    nodes.push(h('p', { class: 'fizzle-hint' }, 'Hint: one of these works with something else.'), tryBtn);
+  }
+  out.replaceChildren(...nodes);
 }
 
 function trapTab(e: KeyboardEvent, root: HTMLElement) {
