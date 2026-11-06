@@ -50,6 +50,23 @@ function flaskButton(f: Flask) {
   );
 }
 
+/** Fanlight at the top of the arch: an inner half-circle, radiating spokes and a transom bar. */
+function fanlight() {
+  const d = h('span', { class: 'st-fanlight', 'aria-hidden': 'true' });
+  const c = { x: 130, y: 130 };
+  const spokes = [30, 60, 90, 120, 150].map((deg) => {
+    const r = (deg * Math.PI) / 180;
+    return `<line x1="${c.x + 56 * Math.cos(r)}" y1="${c.y - 56 * Math.sin(r)}" x2="${c.x + 134 * Math.cos(r)}" y2="${c.y - 134 * Math.sin(r)}"/>`;
+  }).join('');
+  d.innerHTML = `<svg viewBox="0 0 260 136" preserveAspectRatio="xMidYMax meet" focusable="false">
+    <g stroke="#898ac4" stroke-width="7" fill="none">
+      <path d="M 74 130 A 56 56 0 0 1 186 130"/>${spokes}
+    </g>
+    <rect x="0" y="128" width="260" height="8" fill="#898ac4"/>
+  </svg>`;
+  return d;
+}
+
 function decor(svg: string, cls: string) {
   const d = h('li', { class: `decor ${cls}`, 'aria-hidden': 'true' });
   d.innerHTML = svg;
@@ -90,14 +107,16 @@ function build(): HTMLElement {
       h('section', { class: 'st-window', 'aria-labelledby': 'results-h' },
         h('div', { class: 'st-window-glass' },
           h('span', { class: 'st-moon', 'aria-hidden': 'true' }),
+          fanlight(),
           h('span', { class: 'st-mullions', 'aria-hidden': 'true' }),
           h('h3', { id: 'results-h', class: 'sr-only' }, 'Your brew'),
           h('div', { class: 'st-result', role: 'region', 'aria-labelledby': 'results-h', 'aria-live': 'polite', tabindex: '0' },
             h('p', { class: 'st-empty' }, 'Brew two bottles and your discoveries will appear here.')),
         ),
-        h('div', { class: 'st-sill', 'aria-hidden': 'true' }, sillPlant),
+        h('div', { class: 'st-sill', 'aria-hidden': 'true' }),
       ),
       h('section', { class: 'st-shelf st-shelf-topics', 'aria-labelledby': 'shelf-topics' },
+        sillPlant,
         h('h3', { id: 'shelf-topics', class: 'shelf-sign' }, 'Topics'),
         h('ul', { class: 'flasks' }, ...topics.map(flaskButton), decor(BOOKS, 'decor-books'), decor(CANDLE, 'decor-candle'),
           h('li', { class: 'cat-spot' }, cat)),
