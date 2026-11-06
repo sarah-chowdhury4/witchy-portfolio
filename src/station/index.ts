@@ -3,6 +3,7 @@ import content from '../content.json';
 import { cauldronSvg } from './cauldron';
 import { enter, exit } from './transition';
 import { brew, hint, pick } from './brew';
+import { ASSET, potionStyle } from './art';
 
 type Flask = (typeof content.flasks)[number];
 
@@ -39,7 +40,7 @@ function h<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Record<string, 
 function flaskButton(f: Flask) {
   return h('li', {},
     h('button', { type: 'button', class: `flask flask-${f.kind}`, 'data-flask': f.id, 'aria-pressed': 'false', draggable: 'true' },
-      h('span', { class: 'flask-glass', 'aria-hidden': 'true' }),
+      h('span', { class: 'potion-sprite', 'aria-hidden': 'true', style: potionStyle(f.id) }),
       h('span', { class: 'flask-label' }, f.label),
     ),
   );
@@ -54,6 +55,7 @@ function build(): HTMLElement {
 
   const pot = h('div', { class: 'st-cauldron' });
   pot.innerHTML = cauldronSvg(160);
+  const cat = h('div', { class: 'st-cat', 'aria-hidden': 'true', style: `background-image:url(${ASSET('cat-black-sleep.png')})` });
 
   const root = h('div', { class: 'station', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'station-title', hidden: '' },
     h('header', { class: 'st-bar' },
@@ -69,7 +71,10 @@ function build(): HTMLElement {
         h('ul', { class: 'flasks' }, ...topics.map(flaskButton)),
       ),
       h('section', { class: 'st-panel st-brew', 'aria-label': 'Cauldron' },
+        h('div', { class: 'st-slots', 'aria-hidden': 'true' },
+          h('span', { class: 'potion-sprite slot' }), h('span', { class: 'potion-sprite slot' })),
         pot,
+        cat,
         h('p', { class: 'st-picks', 'aria-live': 'polite' }, 'Your cauldron is empty. Pick two flasks.'),
         h('div', { class: 'st-actions' },
           h('button', { type: 'button', class: 'st-btn st-btn-primary st-brew-btn', disabled: '' }, 'Brew'),
@@ -124,6 +129,11 @@ function wireBrewing(root: HTMLElement) {
       picks.length === 0 ? 'Your cauldron is empty. Pick two flasks.'
       : picks.length === 1 ? `In the cauldron: ${names[0]}. Pick one more.`
       : `In the cauldron: ${names[0]} + ${names[1]}. Ready to brew!`;
+    root.querySelectorAll<HTMLElement>('.st-slots .slot').forEach((slot, i) => {
+      const id = picks[i];
+      slot.setAttribute('style', id ? potionStyle(id, true) : '');
+      slot.classList.toggle('is-empty', !id);
+    });
     brewBtn.disabled = picks.length !== 2;
     clearBtn.disabled = picks.length === 0;
   }
@@ -140,7 +150,7 @@ const fizzleFor = (a: string, b: string) =>
 
 function potionCard(e: Entry) {
   return h('li', { class: 'potion' },
-    h('span', { class: 'potion-icon', 'aria-hidden': 'true' }),
+    h('span', { class: 'potion-icon', 'aria-hidden': 'true' }, '✦'),
     h('div', { class: 'potion-body' },
       h('p', { class: 'potion-kind' }, e.kind),
       h('h4', {}, e.name),
@@ -158,7 +168,10 @@ function showResult(root: HTMLElement, a: string, b: string) {
   out.classList.toggle('is-fizzle', !found.length);
   if (found.length) {
     out.replaceChildren(
-      h('p', { class: 'st-result-title' }, `${title}: ${found.length === 1 ? '1 discovery' : `${found.length} discoveries`}`),
+      h('p', { class: 'st-result-title' },
+        h('span', { class: 'potion-sprite', 'aria-hidden': 'true', style: potionStyle(a) }),
+        h('span', { class: 'potion-sprite', 'aria-hidden': 'true', style: potionStyle(b) }),
+        `${title}: ${found.length === 1 ? '1 discovery' : `${found.length} discoveries`}`),
       h('ul', { class: 'potions' }, ...found.map(potionCard)),
     );
     return;

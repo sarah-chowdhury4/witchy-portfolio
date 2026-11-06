@@ -48,3 +48,8 @@ test('picking: toggle, cap at two, third replaces the oldest', () => {
   assert.deepEqual(pick(['a', 'b'], 'c'), ['b', 'c']);
   assert.deepEqual(pick(['a', 'b'], 'a'), ['b']);
 });
+
+test('every flask has a potion sprite', async () => {
+  const src = readFileSync(new URL('../src/station/art.ts', import.meta.url), 'utf8');
+  for (const id of ids) assert.ok(src.includes(`'${id}'`), `no sprite for ${id}`);
+});
