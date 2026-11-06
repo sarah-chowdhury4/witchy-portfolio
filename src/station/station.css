@@ -116,6 +116,9 @@
   /* 64x64 frames at 2x; the cat's pixels sit at x 10-53, y 18-50 in each
      frame, so the box is cropped exactly to them and rests on the plank */
   width: 88px; height: 64px; flex: none;
+  /* chin is 10 sprite px (20px) above the tail tip: lower so the chin rests on
+     the plank and the tail drapes over its front edge */
+  margin-bottom: -20px; position: relative; z-index: 1;
   background-size: 768px 128px; background-position: -20px -36px; background-repeat: no-repeat;
   image-rendering: pixelated; pointer-events: none;
   animation: cat-sleep 1.8s steps(6) infinite;
