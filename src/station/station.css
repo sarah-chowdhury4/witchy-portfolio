@@ -90,42 +90,49 @@
 /* Window with the cat on the sill */
 .st-window { display: grid; justify-items: center; align-content: end; }
 .st-window-glass {
-  position: relative; width: 280px; height: 400px; overflow: hidden;
-  border: 10px solid var(--plank); border-bottom: 0; border-radius: 140px 140px 0 0;
+  /* inner width = 2 x inner arch radius, so the fanlight half-circle fits exactly */
+  --inner: 260px;
+  position: relative; width: calc(var(--inner) + 20px); height: 470px; overflow: hidden;
+  border: 10px solid var(--plank); border-bottom: 0; border-radius: calc(var(--inner) / 2 + 10px) calc(var(--inner) / 2 + 10px) 0 0;
   background:
     radial-gradient(var(--cream) 1px, transparent 1.6px) 10px 14px / 38px 44px,
     radial-gradient(#c0c9ee 1px, transparent 1.6px) 24px 30px / 52px 58px,
     linear-gradient(#1b1d40, #4b4d86);
   box-shadow: inset 0 0 0 4px var(--plank-lo);
 }
-.st-mullions { position: absolute; inset: 0; pointer-events: none; transition: opacity 300ms ease; }
+.st-fanlight { position: absolute; z-index: 2; left: 0; right: 0; top: 0; height: calc(var(--inner) / 2 + 6px); pointer-events: none; }
+.st-fanlight svg { display: block; width: 100%; height: 100%; }
+/* lower panes: a vertical bar and one cross bar below the transom */
+.st-mullions { position: absolute; left: 0; right: 0; bottom: 0; top: calc(var(--inner) / 2 + 6px); pointer-events: none; transition: opacity 300ms ease; }
 .st-mullions::before, .st-mullions::after { content: ''; position: absolute; background: var(--plank); }
 .st-mullions::before { left: 50%; top: 0; bottom: 0; width: 8px; margin-left: -4px; }
-.st-mullions::after { left: 0; right: 0; top: 46%; height: 8px; }
+.st-mullions::after { left: 0; right: 0; top: 50%; height: 8px; margin-top: -4px; }
 /* Scrying: when a brew lands the panes fog and the discoveries show in the glass */
 .st-window-glass::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; top: calc(var(--inner) / 2 + 6px); pointer-events: none; opacity: 0;
   background: rgba(27, 29, 64, 0.82); transition: opacity 300ms ease;
 }
 .st-window-glass.has-result .st-mullions { opacity: 0; }
 .st-window-glass.has-result::after { opacity: 1; }
-.st-window-glass.has-result .st-moon { opacity: 0.35; }
+
 .st-result {
-  position: absolute; z-index: 1; inset: 56px 18px 60px; overflow-y: auto;
+  /* the lower panes, under the transom */
+  position: absolute; z-index: 1; left: 14px; right: 14px; bottom: 12px; top: calc(var(--inner) / 2 + 18px); overflow-y: auto;
   color: var(--cream); font-size: 0.95rem; line-height: 1.4;
   scrollbar-width: thin; scrollbar-color: var(--plank) transparent;
 }
 .st-result:focus-visible { outline: 3px solid var(--cream); outline-offset: -3px; border-radius: 8px; }
-.st-empty { margin: 150px 8px 0; text-align: center; color: #c0c9ee; font-style: italic; text-shadow: 0 1px 2px #1b1d40; }
+.st-empty { margin: 36px 8px 0; text-align: center; color: #c0c9ee; font-style: italic; text-shadow: 0 1px 2px #1b1d40; }
 .st-moon {
-  position: absolute; transition: opacity 300ms ease; top: 34px; right: 26px; width: 40px; height: 40px; border-radius: 50%;
+  position: absolute; transition: opacity 300ms ease; top: 46px; right: 64px; width: 40px; height: 40px; border-radius: 50%;
   background: var(--cream); box-shadow: 0 0 24px 6px rgba(255, 242, 224, 0.35);
 }
 .st-sill {
   position: relative; width: 316px; height: 24px; background: var(--plank-hi);
   box-shadow: inset 0 -8px 0 0 var(--plank), 0 4px 0 0 var(--plank-lo);
 }
-.sill-plant { position: absolute; left: 6px; bottom: 20px; }
+.st-shelf { position: relative; }
+.sill-plant { position: absolute; right: 18px; bottom: 100%; margin-bottom: 6px; }
 .sill-plant svg { display: block; image-rendering: pixelated; }
 .cat-spot { grid-column: span 2; }
 .st-cat-btn {
@@ -203,8 +210,9 @@
 @media (max-width: 1000px) {
   .st-scene { grid-template-columns: 1fr; }
   .st-window { order: -1; }
-  .st-window-glass { width: min(320px, 100%); height: 360px; border-radius: 160px 160px 0 0; }
-  .st-sill { width: min(356px, 100%); }
+  .st-window-glass { --inner: 280px; height: 470px; }
+  .st-sill { width: 336px; }
+  .sill-plant { display: none; }
   .flasks { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); }
 }
 @media (max-width: 600px) {
