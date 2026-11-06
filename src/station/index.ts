@@ -63,6 +63,8 @@ function build(): HTMLElement {
   const pot = h('div', { class: 'st-cauldron' });
   pot.innerHTML = cauldronSvg(128);
   const cat = h('div', { class: 'st-cat', 'aria-hidden': 'true', style: `background-image:url(${ASSET('cat-black-sleep.png')})` });
+  const sillPlant = h('div', { class: 'sill-plant', 'aria-hidden': 'true' });
+  sillPlant.innerHTML = PLANT;
 
   const root = h('div', { class: 'station', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'station-title', hidden: '' },
     h('header', { class: 'st-bar' },
@@ -73,15 +75,16 @@ function build(): HTMLElement {
     h('div', { class: 'st-scene' },
       h('section', { class: 'st-shelf st-shelf-skills', 'aria-labelledby': 'shelf-skills' },
         h('h3', { id: 'shelf-skills', class: 'shelf-sign' }, 'Skills'),
-        h('ul', { class: 'flasks' }, ...skills.map(flaskButton), decor(PLANT, 'decor-plant')),
+        h('ul', { class: 'flasks' }, ...skills.map(flaskButton)),
       ),
       h('div', { class: 'st-window', 'aria-hidden': 'true' },
         h('div', { class: 'st-window-glass' }, h('span', { class: 'st-moon' })),
-        h('div', { class: 'st-sill' }, cat),
+        h('div', { class: 'st-sill' }, sillPlant),
       ),
       h('section', { class: 'st-shelf st-shelf-topics', 'aria-labelledby': 'shelf-topics' },
         h('h3', { id: 'shelf-topics', class: 'shelf-sign' }, 'Topics'),
-        h('ul', { class: 'flasks' }, ...topics.map(flaskButton), decor(BOOKS, 'decor-books'), decor(CANDLE, 'decor-candle')),
+        h('ul', { class: 'flasks' }, ...topics.map(flaskButton), decor(BOOKS, 'decor-books'), decor(CANDLE, 'decor-candle'),
+          h('li', { class: 'cat-spot' }, cat)),
       ),
     ),
     h('section', { class: 'st-counter st-brew', 'aria-label': 'Cauldron' },
@@ -145,7 +148,7 @@ function wireBrewing(root: HTMLElement) {
       : `In the cauldron: ${names[0]} + ${names[1]}. Ready to brew!`;
     root.querySelectorAll<HTMLElement>('.st-slots .slot').forEach((slot, i) => {
       const id = picks[i];
-      slot.setAttribute('style', id ? potionStyle(id, true) : '');
+      slot.setAttribute('style', id ? potionStyle(id, 4) : '');
       slot.classList.toggle('is-empty', !id);
     });
     brewBtn.disabled = picks.length !== 2;
@@ -183,8 +186,8 @@ function showResult(root: HTMLElement, a: string, b: string) {
   if (found.length) {
     out.replaceChildren(
       h('p', { class: 'st-result-title' },
-        h('span', { class: 'potion-sprite', 'aria-hidden': 'true', style: potionStyle(a) }),
-        h('span', { class: 'potion-sprite', 'aria-hidden': 'true', style: potionStyle(b) }),
+        h('span', { class: 'potion-sprite', 'aria-hidden': 'true', style: potionStyle(a, 2) }),
+        h('span', { class: 'potion-sprite', 'aria-hidden': 'true', style: potionStyle(b, 2) }),
         `${title}: ${found.length === 1 ? '1 discovery' : `${found.length} discoveries`}`),
       h('ul', { class: 'potions' }, ...found.map(potionCard)),
     );
