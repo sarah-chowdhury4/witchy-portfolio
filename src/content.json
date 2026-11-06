@@ -363,7 +363,7 @@
     "catName": "Luna",
     "welcome": [
       "Oh, a visitor! Welcome to my little potion shop.",
-      "I'm Sarah. I grew up loving cozy pixel games like Stardew Valley and Minecraft, so I built my portfolio as a place you can play in.",
+      "I'm Sarah. I love mixing creativity with tech, so I turned my portfolio into a potion shop, inspired by my favourite game, Stardew Valley, and the magic in my favourite manga, Witch Hat Atelier.",
       "Every bottle on these shelves is a skill or a topic I've worked with. Mix two in the cauldron to see what I made with them.",
       "Some mixes hide secret recipes about me. And that's Luna, asleep on the shelf. She runs the place."
     ]
@@ -374,8 +374,24 @@
         "games",
         "tech"
       ],
-      "title": "Why a potion shop?",
-      "text": "I love cozy pixel games like Stardew Valley and Minecraft. This little shop is my tribute to them, and to the joy of building things you can explore."
+      "title": "My favourite game",
+      "text": "Stardew Valley, all the way. It's a big part of why I'm passionate about combining creativity and tech, and why this portfolio is a pixel potion shop."
+    },
+    {
+      "pair": [
+        "media",
+        "discovery"
+      ],
+      "title": "On my bookshelf",
+      "text": "Classic fiction and manga. My favourite manga of all time is Witch Hat Atelier, and its magic is where this witchy spell station came from."
+    },
+    {
+      "pair": [
+        "video-editing",
+        "games"
+      ],
+      "title": "My newest hobby",
+      "text": "I recently picked up art: one more way to mix creativity with the things I build."
     },
     {
       "pair": [
