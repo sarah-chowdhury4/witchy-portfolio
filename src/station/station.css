@@ -1,0 +1,85 @@
+/* Spell station: placeholder layout (art arrives in Stage 6). Uses the site palette. */
+.station-open, .station-open body { overflow: hidden; }
+
+.station {
+  position: fixed; inset: 0; z-index: 50;
+  overflow-y: auto;
+  background-color: #24264f;
+  background-image:
+    radial-gradient(#fff2e0 1.5px, transparent 2px),
+    radial-gradient(#c0c9ee 1px, transparent 1.5px);
+  background-size: 180px 180px, 110px 110px;
+  background-position: 20px 40px, 70px 90px;
+  color: #24264f;
+  font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
+}
+.station[hidden] { display: none; }
+
+.st-bar {
+  display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 4px 16px;
+  max-width: 1200px; margin: 0 auto; padding: 16px;
+}
+.st-bar h2 { font-family: 'Jersey 10', system-ui, sans-serif; font-weight: 400; font-size: clamp(2.25rem, 5vw, 3rem); line-height: 1; margin: 0; color: #fff2e0; }
+.st-sub { grid-column: 2; margin: 0; color: #c0c9ee; }
+
+.st-exit, .st-btn {
+  font-family: 'Jersey 10', system-ui, sans-serif; font-size: 1.5rem; line-height: 1;
+  min-height: 44px; padding: 0 20px; border-radius: 999px; cursor: pointer;
+  border: 2px solid #fff2e0; background: #fff2e0; color: #24264f;
+}
+.st-exit { grid-row: span 2; }
+.st-exit:hover, .st-btn:hover:not(:disabled) { background: #c0c9ee; }
+.st-btn-primary { background: #33356f; color: #fff2e0; border-color: #33356f; box-shadow: 0 6px 0 0 #898ac4; }
+.st-btn-primary:hover:not(:disabled) { background: #24264f; }
+.st-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.station :focus-visible { outline: 3px solid #fff2e0; outline-offset: 3px; }
+.st-panel :focus-visible { outline-color: #24264f; }
+
+.st-body {
+  max-width: 1200px; margin: 0 auto; padding: 8px 16px 48px;
+  display: grid; gap: 24px;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 4fr) minmax(0, 4fr);
+  align-items: start;
+}
+.st-panel {
+  background: #fff2e0; border: 2px solid #898ac4; border-radius: 16px;
+  box-shadow: 0 6px 0 0 #898ac4; padding: 24px;
+}
+.st-panel h3 { font-family: 'Jersey 10', system-ui, sans-serif; font-weight: 400; font-size: 1.75rem; line-height: 1; margin: 0 0 16px; color: #33356f; }
+.st-panel h3 + .flasks + h3 { margin-top: 24px; }
+
+.flasks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+.flask {
+  width: 100%; min-height: 44px; display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px; text-align: left; cursor: pointer;
+  font: inherit; font-size: 0.95rem; color: #24264f;
+  background: #c0c9ee; border: 2px solid transparent; border-radius: 10px;
+}
+.flask-topic { background: #a2aadb; }
+.flask:hover { border-color: #33356f; }
+.flask-glass { flex: none; width: 14px; height: 18px; border-radius: 3px 3px 7px 7px; background: #fff2e0; border: 2px solid #33356f; }
+
+.st-brew { text-align: center; display: grid; justify-items: center; gap: 16px; }
+.st-cauldron svg { display: block; image-rendering: pixelated; }
+.st-picks { margin: 0; }
+.st-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.st-empty { margin: 0; color: #4b4d86; }
+
+@media (max-width: 960px) {
+  .st-body { grid-template-columns: 1fr 1fr; }
+  .st-shelf { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .st-body { grid-template-columns: 1fr; }
+  .st-bar { grid-template-columns: 1fr; }
+  .st-exit { grid-row: auto; justify-self: start; }
+  .st-sub { grid-column: 1; }
+  .st-panel { padding: 16px; }
+}
+
+/* Entry / exit transition layer */
+.bubble-layer { position: fixed; inset: 0; z-index: 60; pointer-events: none; overflow: hidden; }
+.bubble-fill { position: absolute; inset: 0; clip-path: circle(0px at 50% 50%); }
+.bubble-pot { position: absolute; width: 96px; height: 96px; transform: scale(0); }
+.bubble-pot svg { image-rendering: pixelated; }
+.bubble { position: absolute; border-radius: 50%; border: 3px solid #33356f; opacity: 0; }
