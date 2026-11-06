@@ -128,13 +128,19 @@
 .sill-plant { position: absolute; left: 6px; bottom: 20px; }
 .sill-plant svg { display: block; image-rendering: pixelated; }
 .cat-spot { grid-column: span 2; }
+.st-cat-btn {
+  display: block; padding: 0; margin: 0; border: 0; background: none; cursor: pointer;
+  border-radius: 10px; position: relative; z-index: 1; margin-bottom: -20px;
+}
+.st-cat-btn:hover .st-cat { filter: brightness(1.15); }
+.st-cat-btn:focus-visible { outline: 3px solid var(--cream); outline-offset: 4px; }
 .st-cat {
   /* 64x64 frames at 2x; the cat's pixels sit at x 10-53, y 18-50 in each
      frame, so the box is cropped exactly to them and rests on the plank */
   width: 88px; height: 64px; flex: none;
-  /* chin is 10 sprite px (20px) above the tail tip: lower so the chin rests on
-     the plank and the tail drapes over its front edge */
-  margin-bottom: -20px; position: relative; z-index: 1;
+  /* chin is 10 sprite px (20px) above the tail tip: the button is lowered
+     20px so the chin rests on the plank and the tail drapes over its edge */
+  display: block;
   background-size: 768px 128px; background-position: -20px -36px; background-repeat: no-repeat;
   image-rendering: pixelated; pointer-events: none;
   animation: cat-sleep 1.8s steps(6) infinite;
@@ -204,7 +210,7 @@
 @media (max-width: 600px) {
   .st-bar { grid-template-columns: 1fr auto; }
   .st-exit { grid-row: auto; justify-self: start; }
-  .st-help { grid-row: 1; grid-column: 2; }
+  .st-tools { grid-row: 1; grid-column: 2; }
   .st-bar h2 { grid-column: 1 / -1; }
   .st-sub { grid-column: 1 / -1; }
   .st-counter { grid-template-columns: auto 1fr; gap: 12px 16px; }
@@ -216,12 +222,15 @@
 /* Header help button */
 .st-bar { grid-template-columns: auto 1fr auto; }
 .st-sub { grid-column: 2 / 4; }
-.st-help {
-  grid-row: 1; grid-column: 3; width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+.st-tools { grid-row: 1; grid-column: 3; display: flex; gap: 8px; }
+.st-help { width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
   font-family: 'Jersey 10', system-ui, sans-serif; font-size: 1.6rem; line-height: 1;
   background: transparent; color: var(--cream); border: 2px solid var(--cream);
 }
 .st-help:hover { background: rgba(255, 242, 224, 0.15); }
+.st-sound { position: relative; }
+.st-sound[aria-pressed='true'] { opacity: 0.75; }
+.st-sound[aria-pressed='true']::after { content: ''; position: absolute; left: 9px; right: 9px; top: 50%; height: 3px; background: var(--cream); transform: rotate(-45deg); }
 
 /* Shopkeeper welcome (Stardew-style dialogue box) */
 .st-welcome {
@@ -257,6 +266,8 @@
   box-shadow: 0 0 12px 4px rgba(192, 201, 238, 0.7);
 }
 .fx-spark { position: absolute; background-size: 144px 48px; background-repeat: no-repeat; image-rendering: pixelated; }
+.fx-heart { position: absolute; opacity: 0; }
+.fx-heart svg { display: block; image-rendering: pixelated; }
 .fx-smoke { position: absolute; border-radius: 50%; background: rgba(160, 162, 190, 0.55); filter: blur(1px); }
 
 /* Entry / exit transition layer */

@@ -4,6 +4,7 @@ import { cauldronSvg } from './cauldron';
 import { enter, exit } from './transition';
 import { brew, hint, pick, secretFor } from './brew';
 import { buildWelcome, seenWelcome } from './welcome';
+import { wireCat } from './cat';
 import { ASSET, potionStyle } from './art';
 import { BOOKS, CANDLE, PLANT } from './decor';
 import { brewing, fizzle, success } from './effects';
@@ -64,7 +65,9 @@ function build(): HTMLElement {
 
   const pot = h('div', { class: 'st-cauldron' });
   pot.innerHTML = cauldronSvg(128);
-  const cat = h('div', { class: 'st-cat', 'aria-hidden': 'true', style: `background-image:url(${ASSET('cat-black-sleep.png')})` });
+  const catName = content.shop.catName;
+  const cat = h('button', { type: 'button', class: 'st-cat-btn', 'aria-label': `Pet ${catName}, the shop cat`, title: `Pet ${catName}` },
+    h('span', { class: 'st-cat', 'aria-hidden': 'true', style: `background-image:url(${ASSET('cat-black-sleep.png')})` }));
   const sillPlant = h('div', { class: 'sill-plant', 'aria-hidden': 'true' });
   sillPlant.innerHTML = PLANT;
 
@@ -72,7 +75,11 @@ function build(): HTMLElement {
     h('header', { class: 'st-bar' },
       exitBtn,
       h('h2', { id: 'station-title' }, 'Spell Station'),
-      h('button', { type: 'button', class: 'st-help', 'aria-label': "Replay the shopkeeper's welcome" }, '?'),
+      h('div', { class: 'st-tools' },
+        h('button', { type: 'button', class: 'st-help st-sound', 'aria-pressed': 'false', 'aria-label': 'Mute sound' }, '♪'),
+        h('button', { type: 'button', class: 'st-help', 'aria-label': "Replay the shopkeeper's welcome" }, '?'),
+      ),
+      h('p', { class: 'sr-only st-cat-status', 'aria-live': 'polite' }),
       h('p', { class: 'st-sub' }, 'Pick two bottles from the shelves, brew, and see what they made.'),
     ),
     h('div', { class: 'st-scene' },
@@ -113,7 +120,8 @@ function build(): HTMLElement {
   const welcome = buildWelcome(content.shop.welcome, 'Sarah', () =>
     root.querySelector<HTMLElement>('.flask')?.focus({ preventScroll: true }));
   root.append(welcome);
-  root.querySelector('.st-help')?.addEventListener('click', () => openWelcome(root));
+  root.querySelector('.st-help:not(.st-sound)')?.addEventListener('click', () => openWelcome(root));
+  wireCat(root, catName);
   wireBrewing(root);
   root.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
