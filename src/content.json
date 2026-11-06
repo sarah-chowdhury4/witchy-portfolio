@@ -358,5 +358,40 @@
       "label": "Systems",
       "kind": "topic"
     }
+  ],
+  "shop": {
+    "catName": "Luna",
+    "welcome": [
+      "Oh, a visitor! Welcome to my little potion shop.",
+      "I'm Sarah. I grew up loving cozy pixel games like Stardew Valley and Minecraft, so I built my portfolio as a place you can play in.",
+      "Every bottle on these shelves is a skill or a topic I've worked with. Mix two in the cauldron to see what I made with them.",
+      "Some mixes hide secret recipes about me. And that's Luna, asleep on the shelf. She runs the place."
+    ]
+  },
+  "secrets": [
+    {
+      "pair": [
+        "games",
+        "tech"
+      ],
+      "title": "Why a potion shop?",
+      "text": "I love cozy pixel games like Stardew Valley and Minecraft. This little shop is my tribute to them, and to the joy of building things you can explore."
+    },
+    {
+      "pair": [
+        "google-cloud",
+        "systems"
+      ],
+      "title": "Where I'm heading",
+      "text": "I want to work in platform engineering and operations: keeping systems reliable, automated and well documented, so other people can build with confidence."
+    },
+    {
+      "pair": [
+        "data-quality",
+        "mentoring"
+      ],
+      "title": "What I care about",
+      "text": "Whether it's a thesis pipeline or a scholar's slides, I like checking work carefully and giving feedback that is clear and kind."
+    }
   ]
 }

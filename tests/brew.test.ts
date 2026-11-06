@@ -53,3 +53,13 @@ test('every flask has a potion sprite', async () => {
   const src = readFileSync(new URL('../src/station/art.ts', import.meta.url), 'utf8');
   for (const id of ids) assert.ok(src.includes(`'${id}'`), `no sprite for ${id}`);
 });
+
+test('secret recipes use real flasks and only replace fizzles', async () => {
+  const { secretFor } = await import('../src/station/brew.ts');
+  for (const s of content.secrets) {
+    assert.equal(s.pair.length, 2);
+    for (const id of s.pair) assert.ok(ids.includes(id), `unknown flask in secret: ${id}`);
+    assert.equal(brew(items, s.pair[0], s.pair[1]).length, 0, `secret ${s.pair} hides real matches`);
+    assert.equal(secretFor(content.secrets, s.pair[1], s.pair[0]), s);
+  }
+});
