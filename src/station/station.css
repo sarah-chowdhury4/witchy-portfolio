@@ -30,7 +30,7 @@
   min-height: 44px; padding: 0 20px; border-radius: 999px; cursor: pointer;
   border: 2px solid var(--cream); background: var(--cream); color: var(--ink);
 }
-.st-exit { grid-row: span 2; }
+.st-exit { grid-row: span 2; white-space: nowrap; }
 .st-exit:hover, .st-btn:hover:not(:disabled) { background: #c0c9ee; border-color: #c0c9ee; }
 .st-btn-primary { background: var(--plank-hi); border-color: var(--plank-hi); box-shadow: 0 6px 0 0 var(--plank-lo); }
 .st-btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -219,9 +219,9 @@
   .st-bar .st-tour-btn { font-size: 1.2rem; padding: 0 12px; }
   .st-bar { grid-template-columns: 1fr auto; }
   .st-exit { grid-row: auto; justify-self: start; }
-  .st-tools { grid-row: 1; grid-column: 2; }
+  .st-bar .st-tools { grid-row: 1; grid-column: 2; }
   .st-bar h2 { grid-column: 1 / -1; }
-  .st-sub { grid-column: 1 / -1; }
+  .st-bar .st-sub { grid-column: 1 / -1; }
   .st-counter { grid-template-columns: auto 1fr; gap: 12px 16px; }
   .st-counter-text { grid-column: 1 / -1; }
   .flasks > li.decor { display: none; }
