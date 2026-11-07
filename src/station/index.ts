@@ -9,6 +9,7 @@ import { buildTutorial } from './tutorial';
 import { ASSET, potionStyle } from './art';
 import { BOOKS, CANDLE, PLANT } from './decor';
 import { brewing, fizzle, success } from './effects';
+import { playPop, playSparkle } from './sounds';
 
 type Flask = (typeof content.flasks)[number];
 
@@ -171,7 +172,11 @@ function wireBrewing(root: HTMLElement) {
   const clearBtn = root.querySelector<HTMLButtonElement>('.st-clear-btn')!;
 
   root.querySelectorAll<HTMLButtonElement>('.flask').forEach((btn) => {
-    btn.addEventListener('click', () => setPicks(pick(picks, btn.dataset.flask!)));
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.flask!;
+      if (!picks.includes(id)) playPop();
+      setPicks(pick(picks, id));
+    });
     btn.addEventListener('dragstart', (e) => {
       e.dataTransfer?.setData('text/plain', btn.dataset.flask!);
       if (e.dataTransfer) e.dataTransfer.effectAllowed = 'copy';
@@ -183,7 +188,7 @@ function wireBrewing(root: HTMLElement) {
     e.preventDefault();
     brewArea.classList.remove('is-drop');
     const id = e.dataTransfer?.getData('text/plain');
-    if (id && LABEL.has(id) && !picks.includes(id)) setPicks(pick(picks, id));
+    if (id && LABEL.has(id) && !picks.includes(id)) { playPop(); setPicks(pick(picks, id)); }
   });
   let brewingNow = false;
   brewBtn.addEventListener('click', async () => {
@@ -195,8 +200,9 @@ function wireBrewing(root: HTMLElement) {
     try {
       await brewing(root);
       const reveal = () => showResult(root, a, b);
+      const revealWithSparkle = () => { playSparkle(); reveal(); };
       const good = brew(ENTRIES, a, b).length > 0 || !!secretFor(content.secrets, a, b);
-      await (good ? success(root, reveal) : fizzle(root, reveal));
+      await (good ? success(root, revealWithSparkle) : fizzle(root, reveal));
     } finally {
       brewingNow = false;
       brewBtn.textContent = 'Brew';

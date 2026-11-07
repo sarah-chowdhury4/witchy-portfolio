@@ -1,23 +1,9 @@
 // Luna the shop cat (Stage 8): click/tap/Enter to pet her. Hearts float up
-// and she meows ("Cat meow" by Dragon Studio, Pixabay) unless sound is muted.
-import { ASSET } from './art';
+// and she meows (see sounds.ts) unless sound is muted.
 import { HEART } from './decor';
+import { playMeow, setSound, soundOn } from './sounds';
 
-const KEY = 'witchy-sound';
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
-export const soundOn = () => { try { return localStorage.getItem(KEY) !== 'off'; } catch { return true; } };
-const setSound = (on: boolean) => { try { localStorage.setItem(KEY, on ? 'on' : 'off'); } catch { /* ignore */ } };
-
-let meow: HTMLAudioElement | null = null;
-function playMeow() {
-  if (!soundOn()) return;
-  if (!meow) {
-    meow = new Audio(ASSET('meow.mp3'));
-    meow.volume = 0.5;
-  }
-  meow.currentTime = 0;
-  void meow.play().catch(() => undefined);
-}
 
 const LINES = ['Luna purrs.', 'Luna stretches, then curls back up.', 'Luna flicks her tail happily.', 'Luna purrs louder.'];
 

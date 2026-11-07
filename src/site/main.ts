@@ -72,7 +72,6 @@ function render() {
         chips(p.tech, 'chips small'),
         el('p', { class: 'summary' }, p.summary),
         more,
-        el('p', { class: 'card-foot' }, extLink(p.link, 'GitHub →', `: ${p.name} and other work`)),
       );
     }),
   );
