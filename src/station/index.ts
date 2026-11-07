@@ -17,7 +17,11 @@ export interface Entry {
   name: string; kind: string; summary: string; tech: string[]; link?: string; tags: string[];
 }
 const ENTRIES: Entry[] = [
-  ...content.projects.map((p) => ({ name: p.name, kind: p.kind, summary: p.summary, tech: p.tech, link: p.link, tags: p.tags })),
+  ...content.projects.map((p) => ({
+    name: p.name, kind: p.kind, tech: p.tech, link: p.link, tags: p.tags,
+    // a project can carry a station-only summary (e.g. the thesis mentions its game data)
+    summary: ('stationSummary' in p && typeof p.stationSummary === 'string') ? p.stationSummary : p.summary,
+  })),
   ...content.experience.map((x) => ({
     name: `${x.role} · ${x.org}`, kind: `Experience · ${x.dates}`, summary: x.points[0] ?? '', tech: [], tags: x.tags,
   })),
@@ -139,6 +143,14 @@ function build(): HTMLElement {
     ),
   );
 
+  root.append(h('footer', { class: 'st-footer' },
+    h('p', {},
+      'Potions & sparks: ', h('a', { href: 'https://brysiaa.itch.io/pixel-potions-16x16-px', target: '_blank', rel: 'noopener noreferrer' }, 'Brysiaa', h('span', { class: 'sr-only' }, ' (opens in a new tab)')),
+      ' · Sleeping cat: ', h('a', { href: 'https://toffeecraft.itch.io/cat-sleeping-animation-free', target: '_blank', rel: 'noopener noreferrer' }, 'Toffeecraft', h('span', { class: 'sr-only' }, ' (opens in a new tab)')),
+      ' · Sounds from ', h('a', { href: 'https://pixabay.com/sound-effects/', target: '_blank', rel: 'noopener noreferrer' }, 'Pixabay', h('span', { class: 'sr-only' }, ' (opens in a new tab)')),
+      ': Dragon Studio (meow, pop), humordome, koiroylers, shidenbeatsmusic (sparkles)'),
+    h('p', {}, 'Cauldron, window, shelves and decor are hand-coded pixel art. Fonts: Jersey 10, Atkinson Hyperlegible. Built with Vite + TypeScript, hosted on AWS Amplify.'),
+  ));
   const welcome = buildWelcome(content.shop.welcome, 'Sarah', () =>
     root.querySelector<HTMLElement>('.flask')?.focus({ preventScroll: true }));
   root.append(welcome);

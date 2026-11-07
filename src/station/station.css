@@ -241,6 +241,16 @@
 .st-sound[aria-pressed='true'] { opacity: 0.75; }
 .st-sound[aria-pressed='true']::after { content: ''; position: absolute; left: 9px; right: 9px; top: 50%; height: 3px; background: var(--cream); transform: rotate(-45deg); }
 
+/* Station footer: credits */
+.st-footer {
+  max-width: 1160px; margin: 0 auto; padding: 28px 16px 40px;
+  text-align: center; font-size: 0.9rem; line-height: 1.5; color: #c0c9ee;
+}
+.st-footer p { margin: 0; }
+.st-footer p + p { margin-top: 6px; }
+.st-footer a { color: var(--cream); text-underline-offset: 3px; }
+.st-footer a:hover { color: #ffd98a; }
+
 /* How to brew button + tutorial */
 .st-tour-btn {
   white-space: nowrap; min-height: 44px; padding: 0 16px; border-radius: 999px; cursor: pointer;

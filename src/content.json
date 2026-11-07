@@ -76,7 +76,8 @@
         "llm",
         "data-quality",
         "games"
-      ]
+      ],
+      "stationSummary": "Used game data (frames and dialogue) to test how vision-language model descriptions improve a multimodal classifier: macro-F1 rose from 0.505 to 0.630."
     },
     {
       "name": "Question and Answer Text Classification",
