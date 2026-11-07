@@ -5,6 +5,7 @@ import { enter, exit } from './transition';
 import { brew, hint, pick, secretFor } from './brew';
 import { buildWelcome, seenWelcome } from './welcome';
 import { wireCat } from './cat';
+import { buildTutorial } from './tutorial';
 import { ASSET, potionStyle } from './art';
 import { BOOKS, CANDLE, PLANT } from './decor';
 import { brewing, fizzle, success } from './effects';
@@ -94,7 +95,8 @@ function build(): HTMLElement {
       h('h2', { id: 'station-title' }, 'Spell Station'),
       h('div', { class: 'st-tools' },
         h('button', { type: 'button', class: 'st-help st-sound', 'aria-pressed': 'false', 'aria-label': 'Mute sound' }, '♪'),
-        h('button', { type: 'button', class: 'st-help', 'aria-label': "Replay the shopkeeper's welcome" }, '?'),
+        h('button', { type: 'button', class: 'st-help', 'aria-label': "Replay the shopkeeper's welcome", title: "Replay Sarah's welcome" }, '?'),
+        h('button', { type: 'button', class: 'st-tour-btn' }, h('span', { 'aria-hidden': 'true' }, '✦ '), 'How to brew'),
       ),
       h('p', { class: 'sr-only st-cat-status', 'aria-live': 'polite' }),
       h('p', { class: 'st-sub' }, 'Pick two bottles from the shelves, brew, and see what they made.'),
@@ -140,13 +142,23 @@ function build(): HTMLElement {
     root.querySelector<HTMLElement>('.flask')?.focus({ preventScroll: true }));
   root.append(welcome);
   root.querySelector('.st-help:not(.st-sound)')?.addEventListener('click', () => openWelcome(root));
+  const tourBtn = root.querySelector<HTMLButtonElement>('.st-tour-btn')!;
+  const tour = buildTutorial(root, () => tourBtn.focus({ preventScroll: true }));
+  tourBtn.addEventListener('click', () => {
+    const w = root.querySelector<HTMLElement & { close?: () => void }>('.st-welcome');
+    if (w && !w.hidden) w.close?.();
+    tour.start?.();
+  });
   wireCat(root, catName);
   wireBrewing(root);
   root.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       e.preventDefault();
       const w = root.querySelector<HTMLElement & { close?: () => void }>('.st-welcome');
-      if (w && !w.hidden) w.close?.(); else void closeStation();
+      const t = root.querySelector<HTMLElement & { stop?: () => void }>('.st-tour');
+      if (t && !t.hidden) t.stop?.();
+      else if (w && !w.hidden) w.close?.();
+      else void closeStation();
     }
     if (e.key === 'Tab') trapTab(e, root);
   });
