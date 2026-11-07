@@ -216,7 +216,7 @@
   .flasks { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); }
 }
 @media (max-width: 600px) {
-  .st-tour-btn { font-size: 1.2rem; padding: 0 12px; }
+  .st-bar .st-tour-btn { font-size: 1.2rem; padding: 0 12px; }
   .st-bar { grid-template-columns: 1fr auto; }
   .st-exit { grid-row: auto; justify-self: start; }
   .st-tools { grid-row: 1; grid-column: 2; }
