@@ -1,5 +1,5 @@
 // Luna the shop cat (Stage 8): click/tap/Enter to pet her. Hearts float up
-// and she meows (BigSoundBank S0494, CC0) unless sound is muted.
+// and she meows ("Cat meow" by Dragon Studio, Pixabay) unless sound is muted.
 import { ASSET } from './art';
 import { HEART } from './decor';
 
@@ -12,8 +12,7 @@ let meow: HTMLAudioElement | null = null;
 function playMeow() {
   if (!soundOn()) return;
   if (!meow) {
-    meow = new Audio();
-    meow.src = meow.canPlayType('audio/ogg') ? ASSET('meow.ogg') : ASSET('meow.mp3');
+    meow = new Audio(ASSET('meow.mp3'));
     meow.volume = 0.5;
   }
   meow.currentTime = 0;
